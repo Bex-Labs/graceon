@@ -4,11 +4,14 @@
 
 let currentStep = 1;
 let selectedWrapPrice = 0;
+let loggedInCustomer = null;
+let savedAddress = null;
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
   renderSummary();
   initCharCount();
   initWrapOptions();
+  await checkLoggedInCustomer();
 
   // Redirect if cart is empty
   if (cart.length === 0) {
@@ -22,6 +25,80 @@ document.addEventListener('DOMContentLoaded', () => {
     `;
   }
 });
+
+// ---- Check if customer is logged in, prefill their details ----
+async function checkLoggedInCustomer() {
+  try {
+    const { data: { session } } = await supabaseClient.auth.getSession();
+    if (!session) return;
+
+    loggedInCustomer = session.user;
+
+    // Prefill name, email
+    const meta = loggedInCustomer.user_metadata || {};
+    const fullName = `${meta.first_name || ''} ${meta.last_name || ''}`.trim();
+    if (fullName) document.getElementById('customer-name').value = fullName;
+    document.getElementById('customer-email').value = loggedInCustomer.email;
+
+    // Fetch their saved address
+    const { data: address, error } = await supabaseClient
+      .from('customer_addresses')
+      .select('*')
+      .eq('user_id', loggedInCustomer.id)
+      .eq('is_default', true)
+      .maybeSingle();
+
+    if (error) throw error;
+    if (!address) return;
+
+    savedAddress = address;
+
+    // Show the saved address banner
+    const banner = document.getElementById('saved-address-banner');
+    const preview = document.getElementById('saved-address-preview');
+    if (banner && preview) {
+      preview.textContent = `${address.address}, ${address.state}`;
+      banner.style.display = 'block';
+    }
+
+    // Prefill phone + address fields by default (since "saved" is checked by default)
+    fillFormWithSavedAddress();
+
+  } catch (err) {
+    console.error('Error checking logged in customer:', err);
+  }
+}
+
+// ---- Fill form fields with saved address ----
+function fillFormWithSavedAddress() {
+  if (!savedAddress) return;
+
+  document.getElementById('customer-phone').value = savedAddress.phone || '';
+  document.getElementById('address-street').value = savedAddress.address || '';
+  document.getElementById('address-state').value = savedAddress.state || '';
+  document.getElementById('address-city').value = savedAddress.state || '';
+  document.getElementById('address-zip').value = '';
+}
+
+// ---- Clear address fields (for "different address" choice) ----
+function clearAddressFields() {
+  document.getElementById('customer-phone').value = '';
+  document.getElementById('address-street').value = '';
+  document.getElementById('address-city').value = '';
+  document.getElementById('address-state').value = '';
+  document.getElementById('address-zip').value = '';
+}
+
+// ---- Toggle between saved address and different address ----
+function toggleAddressSource() {
+  const choice = document.querySelector('input[name="address-choice"]:checked')?.value;
+
+  if (choice === 'saved') {
+    fillFormWithSavedAddress();
+  } else {
+    clearAddressFields();
+  }
+}
 
 // ---- Step Navigation ----
 function goToStep(step) {
@@ -200,7 +277,8 @@ async function placeOrder() {
     items: cart,
     total: total,
     status: 'pending',
-    gift_message: isGift ? val('gift-message') : null
+    gift_message: isGift ? val('gift-message') : null,
+    user_id: loggedInCustomer ? loggedInCustomer.id : null
   };
 
   try {

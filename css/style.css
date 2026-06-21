@@ -620,3 +620,173 @@ button { cursor: pointer; border: none; background: none; font-family: var(--fon
 @media (max-width: 480px) {
   .footer-grid { grid-template-columns: 1fr; }
 }
+
+/* ACCOUNT DROPDOWN */
+.navbar-account-wrap {
+  position: relative;
+}
+
+.account-dropdown {
+  position: absolute;
+  top: calc(100% + 12px);
+  right: 0;
+  background: var(--white);
+  border-radius: var(--radius-sm);
+  box-shadow: 0 12px 32px rgba(0,0,0,0.15);
+  min-width: 200px;
+  padding: 8px;
+  display: none;
+  flex-direction: column;
+  z-index: 1000;
+}
+
+.account-dropdown.open {
+  display: flex;
+}
+
+.account-dropdown-greeting {
+  padding: 10px 14px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--dark);
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 4px;
+}
+
+.account-dropdown-link {
+  display: block;
+  padding: 10px 14px;
+  font-size: 13px;
+  color: var(--dark);
+  border-radius: 6px;
+  transition: var(--transition);
+  background: none;
+  border: none;
+  text-align: left;
+  width: 100%;
+  cursor: pointer;
+  font-family: var(--font);
+}
+
+.account-dropdown-link:hover {
+  background: var(--gray-light);
+}
+
+.account-dropdown-signup {
+  color: var(--green);
+  font-weight: 700;
+}
+
+.account-dropdown-logout {
+  color: #c0392b;
+}
+
+/* OUT OF STOCK CARD STATES */
+.badge-outofstock {
+  background: #6b6b6b;
+  color: var(--white);
+}
+
+.card-notify-row {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+.card-notify-input {
+  flex: 1;
+  padding: 9px 10px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 12px;
+  outline: none;
+}
+
+.card-notify-input:focus {
+  border-color: var(--green);
+}
+
+.card-notify-input:disabled {
+  background: var(--green-light);
+  color: var(--green-dark);
+}
+
+.btn-card-notify {
+  background: var(--green);
+  color: var(--white);
+  padding: 9px 14px;
+  border-radius: var(--radius-sm);
+  font-size: 12px;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: var(--transition);
+}
+
+.btn-card-notify:hover { background: var(--green-dark); }
+
+/* SHARED OUT OF STOCK / NOTIFY ME BOX (used in Quick View modal and detail pages) */
+.out-of-stock-banner {
+  background: #fee2e2;
+  color: #dc2626;
+  padding: 14px 18px;
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.notify-me-box {
+  background: var(--green-light);
+  border: 1px solid var(--green);
+  border-radius: var(--radius-sm);
+  padding: 18px 20px;
+}
+
+.notify-me-label {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--green-dark);
+  margin-bottom: 12px;
+}
+
+.notify-me-row {
+  display: flex;
+  gap: 8px;
+}
+
+.notify-me-row input {
+  flex: 1;
+  padding: 11px 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  outline: none;
+}
+
+.notify-me-row input:focus {
+  border-color: var(--green);
+}
+
+.btn-notify-me {
+  background: var(--green);
+  color: var(--white);
+  padding: 11px 20px;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: var(--transition);
+}
+
+.btn-notify-me:hover { background: var(--green-dark); }
+
+.notify-me-success {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--green-dark);
+  text-align: center;
+}

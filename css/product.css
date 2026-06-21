@@ -359,3 +359,68 @@
   .products-grid { grid-template-columns: 1fr; }
   .product-features-grid { grid-template-columns: 1fr; }
 }
+
+/* OUT OF STOCK / NOTIFY ME */
+.out-of-stock-banner {
+  background: #fee2e2;
+  color: #dc2626;
+  padding: 14px 18px;
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.notify-me-box {
+  background: var(--green-light);
+  border: 1px solid var(--green);
+  border-radius: var(--radius-sm);
+  padding: 18px 20px;
+}
+
+.notify-me-label {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--green-dark);
+  margin-bottom: 12px;
+}
+
+.notify-me-row {
+  display: flex;
+  gap: 8px;
+}
+
+.notify-me-row input {
+  flex: 1;
+  padding: 11px 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  outline: none;
+}
+
+.notify-me-row input:focus {
+  border-color: var(--green);
+}
+
+.btn-notify-me {
+  background: var(--green);
+  color: var(--white);
+  padding: 11px 20px;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: var(--transition);
+}
+
+.btn-notify-me:hover { background: var(--green-dark); }
+
+.notify-me-success {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--green-dark);
+  text-align: center;
+}

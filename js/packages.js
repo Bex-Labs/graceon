@@ -20,7 +20,6 @@ async function loadPackages() {
     const { data, error } = await supabaseClient
       .from('packages')
       .select('*')
-      .eq('in_stock', true)
       .order('created_at', { ascending: false });
 
     if (error) throw error;
@@ -78,6 +77,7 @@ function createPackageCard(pkg) {
   return `
     <div class="package-card" style="cursor:pointer" onclick="window.location.href='package.html?id=${pkg.id}'">
       ${badge}
+      ${!pkg.in_stock ? '<span class="badge badge-outofstock">Out of Stock</span>' : ''}
       <img
         src="${pkg.image_url || 'assets/images/placeholder.jpg'}"
         alt="${pkg.name}"
@@ -91,15 +91,23 @@ function createPackageCard(pkg) {
         ${contents}
         <div class="package-card-footer">
           <span class="package-card-price">${formatNaira(pkg.price)}</span>
-          <button class="btn-pkg-cart" onclick='event.stopPropagation(); addToCart(${JSON.stringify({
-            id: pkg.id,
-            name: pkg.name,
-            price: pkg.price,
-            image_url: pkg.image_url
-          })})'>
-            🛒 Add to Cart
-          </button>
+          ${pkg.in_stock ? `
+            <button class="btn-pkg-cart" onclick='event.stopPropagation(); addToCart(${JSON.stringify({
+              id: pkg.id,
+              name: pkg.name,
+              price: pkg.price,
+              image_url: pkg.image_url
+            })})'>
+              🛒 Add to Cart
+            </button>
+          ` : ''}
         </div>
+        ${!pkg.in_stock ? `
+          <div class="card-notify-row" onclick="event.stopPropagation()">
+            <input type="email" class="card-notify-input" id="notify-input-pkg-${pkg.id}" placeholder="your@email.com" onclick="event.stopPropagation()" />
+            <button class="btn-card-notify" onclick="event.stopPropagation(); submitCardNotify(null, '${pkg.id}')">Notify Me</button>
+          </div>
+        ` : ''}
       </div>
     </div>
   `;

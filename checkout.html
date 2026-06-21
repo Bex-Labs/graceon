@@ -55,6 +55,23 @@
         <div class="checkout-step-panel active" id="step-1">
           <h2>Your Details</h2>
           <p class="step-subtitle">We'll use this information to keep you updated on your order</p>
+      
+          <div class="saved-address-banner" id="saved-address-banner" style="display:none">
+            <div class="saved-address-info">
+              <strong>📍 Use your saved address?</strong>
+              <p id="saved-address-preview"></p>
+            </div>
+            <div class="saved-address-toggle">
+              <label class="saved-address-option">
+                <input type="radio" name="address-choice" value="saved" checked onchange="toggleAddressSource()" />
+                Use saved address
+              </label>
+              <label class="saved-address-option">
+                <input type="radio" name="address-choice" value="different" onchange="toggleAddressSource()" />
+                Ship to a different address
+              </label>
+            </div>
+          </div>
 
           <div class="form-row">
             <div class="form-group">

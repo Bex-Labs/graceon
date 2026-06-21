@@ -28,7 +28,6 @@ async function loadShopProducts() {
     const { data, error } = await supabaseClient
       .from('products')
       .select('*')
-      .eq('in_stock', true)
       .order('created_at', { ascending: false });
 
     if (error) throw error;
@@ -243,22 +242,35 @@ function openQuickView(productId) {
           </p>
           <p class="qv-description">${product.description || ''}</p>
           ${dietary ? `<div class="qv-dietary">${dietary}</div>` : ''}
-          <div class="qv-quantity">
-            <label>Quantity</label>
-            <div class="qv-qty-controls">
-              <button onclick="changeQVQty(-1)">−</button>
-              <span id="qv-qty">1</span>
-              <button onclick="changeQVQty(1)">+</button>
+          ${product.in_stock ? `
+            <div class="qv-quantity">
+              <label>Quantity</label>
+              <div class="qv-qty-controls">
+                <button onclick="changeQVQty(-1)">−</button>
+                <span id="qv-qty">1</span>
+                <button onclick="changeQVQty(1)">+</button>
+              </div>
             </div>
-          </div>
-          <div class="qv-actions">
-            <button class="btn btn-primary qv-add-btn" onclick="addToCartFromQV('${product.id}')">
-              🛒 Add to Cart
-            </button>
-            <button class="btn btn-secondary" onclick="closeQuickView()">
-              Continue Shopping
-            </button>
-          </div>
+            <div class="qv-actions">
+              <button class="btn btn-primary qv-add-btn" onclick="addToCartFromQV('${product.id}')">
+                🛒 Add to Cart
+              </button>
+              <button class="btn btn-secondary" onclick="closeQuickView()">
+                Continue Shopping
+              </button>
+            </div>
+          ` : `
+            <div class="out-of-stock-banner" style="margin-bottom:16px;">
+              <span>😔 Currently Out of Stock</span>
+            </div>
+            <div class="notify-me-box" id="notify-me-box">
+              <p class="notify-me-label">📧 Get notified when this is back!</p>
+              <div class="notify-me-row">
+                <input type="email" id="notify-email-input" placeholder="your@email.com" />
+                <button class="btn-notify-me" onclick="submitNotifyMeQV('${product.id}')">Notify Me</button>
+              </div>
+            </div>
+          `}
           <p class="qv-occasion">
             🎉 Perfect for: <strong>${product.occasion || 'Any occasion'}</strong>
           </p>
@@ -269,6 +281,8 @@ function openQuickView(productId) {
 
   document.body.appendChild(modal);
   document.body.style.overflow = 'hidden';
+
+  if (!product.in_stock) prefillQVNotifyEmail();
 
   // Close on overlay click
   modal.addEventListener('click', (e) => {
@@ -313,6 +327,49 @@ function addToCartFromQV(productId) {
   }
 
   closeQuickView();
+}
+
+// ---- Notify Me from Quick View ----
+async function submitNotifyMeQV(productId) {
+  const input = document.getElementById('notify-email-input');
+  const email = input?.value.trim();
+
+  if (!email || !email.includes('@')) {
+    showToast('Please enter a valid email address.');
+    return;
+  }
+
+  try {
+    const { data: { session } } = await supabaseClient.auth.getSession();
+
+    const { error } = await supabaseClient
+      .from('stock_notifications')
+      .insert([{
+        product_id: productId,
+        email: email,
+        user_id: session?.user?.id || null
+      }]);
+
+    if (error) throw error;
+
+    document.getElementById('notify-me-box').innerHTML = `
+      <p class="notify-me-success">✅ We'll email you the moment this is back in stock!</p>
+    `;
+
+  } catch (err) {
+    console.error('Error submitting notify request:', err);
+    showToast('Something went wrong. Please try again.');
+  }
+}
+
+async function prefillQVNotifyEmail() {
+  const input = document.getElementById('notify-email-input');
+  if (!input) return;
+
+  const { data: { session } } = await supabaseClient.auth.getSession();
+  if (session?.user?.email) {
+    input.value = session.user.email;
+  }
 }
 
 // ---- Quick View Styles ----

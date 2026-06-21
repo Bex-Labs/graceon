@@ -28,6 +28,9 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
+  // ---- Account Dropdown ----
+  initAccountDropdown();
+
   // ---- Search ----
   const searchInput = document.getElementById('search-input');
   searchInput?.addEventListener('keydown', (e) => {
@@ -134,6 +137,7 @@ function createProductCard(product) {
   return `
     <div class="product-card">
       ${badge}
+      ${!product.in_stock ? '<span class="badge badge-outofstock">Out of Stock</span>' : ''}
       <img
         src="${product.image_url || 'assets/images/placeholder.jpg'}"
         alt="${product.name}"
@@ -146,17 +150,27 @@ function createProductCard(product) {
           <strong>${formatNaira(product.price)}</strong> / ${product.price_unit || 'Dozen'}
         </p>
         <div class="product-card-actions">
-          <button class="btn-add-cart" onclick='addToCart(${JSON.stringify({
-            id: product.id,
-            name: product.name,
-            price: product.price,
-            image_url: product.image_url
-          })})'>
-            🛒 Add to Cart
-          </button>
-          <a href="product.html?id=${product.id}" class="btn-quick-view">
-            View Details
-          </a>
+          ${product.in_stock ? `
+            <button class="btn-add-cart" onclick='addToCart(${JSON.stringify({
+              id: product.id,
+              name: product.name,
+              price: product.price,
+              image_url: product.image_url
+            })})'>
+              🛒 Add to Cart
+            </button>
+            <a href="product.html?id=${product.id}" class="btn-quick-view">
+              View Details
+            </a>
+          ` : `
+            <div class="card-notify-row">
+              <input type="email" class="card-notify-input" id="notify-input-${product.id}" placeholder="your@email.com" />
+              <button class="btn-card-notify" onclick="submitCardNotify('${product.id}', null)">Notify Me</button>
+            </div>
+            <a href="product.html?id=${product.id}" class="btn-quick-view">
+              View Details
+            </a>
+          `}
         </div>
       </div>
     </div>
@@ -169,6 +183,7 @@ function createPackageCard(pkg) {
   return `
     <div class="product-card">
       ${badge}
+      ${!pkg.in_stock ? '<span class="badge badge-outofstock">Out of Stock</span>' : ''}
       <img
         src="${pkg.image_url || 'assets/images/placeholder.jpg'}"
         alt="${pkg.name}"
@@ -185,17 +200,27 @@ function createPackageCard(pkg) {
           ${pkg.package_type || ''}
         </p>
         <div class="product-card-actions">
-          <button class="btn-add-cart" onclick='addToCart(${JSON.stringify({
-            id: pkg.id,
-            name: pkg.name,
-            price: pkg.price,
-            image_url: pkg.image_url
-          })})'>
-            🛒 Add to Cart
-          </button>
-          <a href="package.html?id=${pkg.id}" class="btn-quick-view">
-            View Details
-          </a>
+          ${pkg.in_stock ? `
+            <button class="btn-add-cart" onclick='addToCart(${JSON.stringify({
+              id: pkg.id,
+              name: pkg.name,
+              price: pkg.price,
+              image_url: pkg.image_url
+            })})'>
+              🛒 Add to Cart
+            </button>
+            <a href="package.html?id=${pkg.id}" class="btn-quick-view">
+              View Details
+            </a>
+          ` : `
+            <div class="card-notify-row">
+              <input type="email" class="card-notify-input" id="notify-input-pkg-${pkg.id}" placeholder="your@email.com" />
+              <button class="btn-card-notify" onclick="submitCardNotify(null, '${pkg.id}')">Notify Me</button>
+            </div>
+            <a href="package.html?id=${pkg.id}" class="btn-quick-view">
+              View Details
+            </a>
+          `}
         </div>
       </div>
     </div>
@@ -234,6 +259,97 @@ contactForm?.addEventListener('submit', async (e) => {
   btn.textContent = 'Send Message';
   btn.disabled = false;
 });
+
+// ---- Account Dropdown Logic ----
+async function initAccountDropdown() {
+  const accountBtn = document.getElementById('account-btn');
+  const dropdown = document.getElementById('account-dropdown');
+  if (!accountBtn || !dropdown) return;
+
+  // Toggle dropdown open/close
+  accountBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    dropdown.classList.toggle('open');
+  });
+
+  // Close dropdown when clicking outside
+  document.addEventListener('click', (e) => {
+    if (!dropdown.contains(e.target) && e.target !== accountBtn) {
+      dropdown.classList.remove('open');
+    }
+  });
+
+  // Check login state and render dropdown content
+  try {
+    const { data: { session } } = await supabaseClient.auth.getSession();
+
+    if (session) {
+      const firstName = session.user.user_metadata?.first_name || 'there';
+      dropdown.innerHTML = `
+        <div class="account-dropdown-greeting">Hi, ${firstName}! 👋</div>
+        <a href="my-account.html" class="account-dropdown-link">👤 My Account</a>
+        <a href="my-account.html" class="account-dropdown-link">📦 Order History</a>
+        <button class="account-dropdown-link account-dropdown-logout" onclick="accountDropdownLogout()">🚪 Log Out</button>
+      `;
+    } else {
+      dropdown.innerHTML = `
+        <a href="login.html" class="account-dropdown-link">🔑 Log In</a>
+        <a href="signup.html" class="account-dropdown-link account-dropdown-signup">✨ Create Account</a>
+      `;
+    }
+  } catch (err) {
+    console.error('Error checking session:', err);
+    dropdown.innerHTML = `
+      <a href="login.html" class="account-dropdown-link">🔑 Log In</a>
+      <a href="signup.html" class="account-dropdown-link account-dropdown-signup">✨ Create Account</a>
+    `;
+  }
+}
+
+async function accountDropdownLogout() {
+  await supabaseClient.auth.signOut();
+  window.location.href = 'index.html';
+}
+
+// ---- Notify Me from Shop/Homepage card ----
+async function submitCardNotify(productId, packageId) {
+  const inputId = productId ? `notify-input-${productId}` : `notify-input-pkg-${packageId}`;
+  const input = document.getElementById(inputId);
+  const email = input?.value.trim();
+
+  if (!email || !email.includes('@')) {
+    showToast('Please enter a valid email address.');
+    return;
+  }
+
+  try {
+    const { data: { session } } = await supabaseClient.auth.getSession();
+
+    const insertData = {
+      email: email,
+      user_id: session?.user?.id || null
+    };
+    if (productId) insertData.product_id = productId;
+    if (packageId) insertData.package_id = packageId;
+
+    const { error } = await supabaseClient
+      .from('stock_notifications')
+      .insert([insertData]);
+
+    if (error) throw error;
+
+    showToast("You'll be notified when it's back! 📧");
+    if (input) {
+      input.value = '';
+      input.placeholder = 'Subscribed! ✅';
+      input.disabled = true;
+    }
+
+  } catch (err) {
+    console.error('Error submitting notify request:', err);
+    showToast('Something went wrong. Please try again.');
+  }
+}
 
 // ---- Currency Formatter (Naira) ----
 function formatNaira(amount) {

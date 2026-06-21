@@ -506,3 +506,43 @@
   .step-line { width: 30px; }
   .step-label { display: none; }
 }
+
+/* SAVED ADDRESS BANNER */
+.saved-address-banner {
+  background: var(--green-light);
+  border: 1px solid var(--green);
+  border-radius: var(--radius-sm);
+  padding: 16px 20px;
+  margin-bottom: 24px;
+}
+
+.saved-address-info strong {
+  font-size: 14px;
+  color: var(--green-dark);
+  display: block;
+  margin-bottom: 4px;
+}
+
+.saved-address-info p {
+  font-size: 13px;
+  color: var(--dark);
+  margin-bottom: 12px;
+}
+
+.saved-address-toggle {
+  display: flex;
+  gap: 20px;
+}
+
+.saved-address-option {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--dark);
+  cursor: pointer;
+}
+
+.saved-address-option input {
+  cursor: pointer;
+}
