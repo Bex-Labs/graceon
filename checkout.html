@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Checkout — Graceon Cookies</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/checkout.css" />
+</head>
+<body>
+
+  <!-- ANNOUNCEMENT BAR -->
+  <div class="announcement-bar">
+    🍪 Free shipping on orders over ₦50,000! Use code <strong>GRACE50</strong>
+  </div>
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="navbar-left">
+      <a href="index.html" class="navbar-logo">Grace<span>O</span>n</a>
+    </div>
+    <div class="navbar-right">
+      <a href="shop.html" style="font-size:13px; color:var(--gray);">← Continue Shopping</a>
+    </div>
+  </nav>
+
+  <!-- CHECKOUT STEPS -->
+  <div class="checkout-steps">
+    <div class="container">
+      <div class="step active" id="step-1-indicator">
+        <span class="step-number">1</span>
+        <span class="step-label">Details</span>
+      </div>
+      <div class="step-line"></div>
+      <div class="step" id="step-2-indicator">
+        <span class="step-number">2</span>
+        <span class="step-label">Gift Options</span>
+      </div>
+      <div class="step-line"></div>
+      <div class="step" id="step-3-indicator">
+        <span class="step-number">3</span>
+        <span class="step-label">Review</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- CHECKOUT MAIN -->
+  <section class="checkout-layout">
+    <div class="container checkout-grid">
+
+      <!-- LEFT: FORM -->
+      <div class="checkout-form-area">
+
+        <!-- STEP 1: CUSTOMER DETAILS -->
+        <div class="checkout-step-panel active" id="step-1">
+          <h2>Your Details</h2>
+          <p class="step-subtitle">We'll use this information to keep you updated on your order</p>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>Full Name *</label>
+              <input type="text" id="customer-name" placeholder="e.g. Sarah Johnson" required />
+            </div>
+            <div class="form-group">
+              <label>Email Address *</label>
+              <input type="email" id="customer-email" placeholder="sarah@example.com" required />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>Phone Number *</label>
+              <input type="tel" id="customer-phone" placeholder="+1 (555) 123-4567" required />
+            </div>
+            <div class="form-group">
+              <label>Delivery Date</label>
+              <input type="date" id="delivery-date" />
+            </div>
+          </div>
+
+          <h3 class="form-section-title">Delivery Address</h3>
+
+          <div class="form-group">
+            <label>Street Address *</label>
+            <input type="text" id="address-street" placeholder="123 Baker Street" required />
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>City *</label>
+              <input type="text" id="address-city" placeholder="Cookie Town" required />
+            </div>
+            <div class="form-group">
+              <label>State / Province *</label>
+              <input type="text" id="address-state" placeholder="State" required />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>ZIP / Postal Code *</label>
+              <input type="text" id="address-zip" placeholder="12345" required />
+            </div>
+            <div class="form-group">
+              <label>Country *</label>
+              <select id="address-country">
+                <option>Nigeria</option>
+                <option>United States</option>
+                <option>United Kingdom</option>
+                <option>Canada</option>
+                <option>Other</option>
+              </select>
+            </div>
+          </div>
+
+          <button class="btn btn-primary btn-step-next" onclick="goToStep(2)">
+            Continue to Gift Options →
+          </button>
+        </div>
+
+        <!-- STEP 2: GIFT OPTIONS -->
+        <div class="checkout-step-panel" id="step-2">
+          <h2>Gift Options</h2>
+          <p class="step-subtitle">Make it extra special — or skip this step if it's just for you</p>
+
+          <div class="gift-toggle-row">
+            <label class="toggle-switch">
+              <input type="checkbox" id="is-gift-toggle" onchange="toggleGiftOptions()" />
+              <span class="toggle-slider"></span>
+            </label>
+            <div>
+              <strong>This order is a gift</strong>
+              <p>Add a personal message and gift wrapping</p>
+            </div>
+          </div>
+
+          <div id="gift-options-panel" class="gift-options-panel" style="display:none">
+
+            <div class="form-group">
+              <label>Recipient's Name</label>
+              <input type="text" id="gift-recipient" placeholder="Who is this gift for?" />
+            </div>
+
+            <div class="form-group">
+              <label>Personal Gift Message</label>
+              <textarea id="gift-message" rows="4" placeholder="Write a heartfelt message... (max 200 characters)" maxlength="200"></textarea>
+              <span class="char-count"><span id="char-count-num">0</span>/200</span>
+            </div>
+
+            <h3 class="form-section-title">Gift Wrapping</h3>
+
+            <div class="wrap-options">
+              <label class="wrap-option">
+                <input type="radio" name="gift-wrap" value="none" checked />
+                <div class="wrap-option-content">
+                  <strong>Standard Packaging</strong>
+                  <p>Our regular branded box — free</p>
+                </div>
+                <span class="wrap-price">Free</span>
+              </label>
+
+              <label class="wrap-option">
+                <input type="radio" name="gift-wrap" value="ribbon" />
+                <div class="wrap-option-content">
+                  <strong>Signature Ribbon Wrap</strong>
+                  <p>Satin ribbon in green or orange</p>
+                </div>
+                <span class="wrap-price">+₦2,500</span>
+              </label>
+
+              <label class="wrap-option">
+                <input type="radio" name="gift-wrap" value="premium" />
+                <div class="wrap-option-content">
+                  <strong>Premium Gift Box</strong>
+                  <p>Luxury box with ribbon and gift card</p>
+                </div>
+                <span class="wrap-price">+₦5,000</span>
+              </label>
+            </div>
+
+          </div>
+
+          <div class="step-actions">
+            <button class="btn btn-secondary" onclick="goToStep(1)">← Back</button>
+            <button class="btn btn-primary" onclick="goToStep(3)">Continue to Review →</button>
+          </div>
+        </div>
+
+        <!-- STEP 3: REVIEW -->
+        <div class="checkout-step-panel" id="step-3">
+          <h2>Review Your Order</h2>
+          <p class="step-subtitle">Double check everything looks good before placing your order</p>
+
+          <div class="review-section">
+            <h4>📍 Delivery Details</h4>
+            <div id="review-details" class="review-content"></div>
+          </div>
+
+          <div class="review-section" id="review-gift-section" style="display:none">
+            <h4>🎁 Gift Options</h4>
+            <div id="review-gift" class="review-content"></div>
+          </div>
+
+          <div class="review-section">
+            <h4>💳 Payment Method</h4>
+            <div class="payment-options">
+              <label class="payment-option">
+                <input type="radio" name="payment" value="card" checked />
+                <span>💳 Credit / Debit Card</span>
+              </label>
+              <label class="payment-option">
+                <input type="radio" name="payment" value="transfer" />
+                <span>🏦 Bank Transfer</span>
+              </label>
+              <label class="payment-option">
+                <input type="radio" name="payment" value="cod" />
+                <span>📦 Cash on Delivery</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="step-actions">
+            <button class="btn btn-secondary" onclick="goToStep(2)">← Back</button>
+            <button class="btn btn-primary btn-place-order" onclick="placeOrder()">
+              🍪 Place Order
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- RIGHT: ORDER SUMMARY -->
+      <div class="checkout-summary">
+        <h3>Order Summary</h3>
+        <div class="summary-items" id="summary-items">
+          <!-- Filled by JS -->
+        </div>
+
+        <div class="summary-row">
+          <span>Subtotal</span>
+          <span id="summary-subtotal">₦0</span>
+        </div>
+        <div class="summary-row" id="summary-wrap-row" style="display:none">
+          <span>Gift Wrapping</span>
+          <span id="summary-wrap">₦0</span>
+        </div>
+        <div class="summary-row">
+          <span>Shipping</span>
+          <span id="summary-shipping">₦0</span>
+        </div>
+        <div class="summary-row total-row">
+          <span>Total</span>
+          <span id="summary-total">₦0</span>
+        </div>
+
+        <div class="summary-note">
+          🚚 Free shipping on orders over ₦50,000
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ORDER SUCCESS MODAL -->
+  <div class="success-overlay" id="success-overlay">
+    <div class="success-modal">
+      <div class="success-icon">🎉</div>
+      <h2>Order Placed!</h2>
+      <p>Thank you for your order. A confirmation email has been sent to your inbox.</p>
+      <p class="order-id" id="order-id-display"></p>
+      <a href="index.html" class="btn btn-primary">Back to Home</a>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase.js"></script>
+  <script src="js/cart.js"></script>
+  <script src="js/checkout.js"></script>
+</body>
+</html>

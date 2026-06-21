@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Graceon — Handcrafted Cookies, Baked with Love</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/index.css" />
+</head>
+<body>
+
+  <!-- ANNOUNCEMENT BAR -->
+  <div class="announcement-bar">
+    🍪 Free shipping on orders over ₦50,000! Use code <strong>GRACE50</strong>
+  </div>
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="navbar-left">
+      <div class="hamburger" id="hamburger">
+        <span></span><span></span><span></span>
+      </div>
+      <a href="index.html" class="navbar-logo">Grace<span>O</span>n</a>
+    </div>
+
+    <div class="navbar-center" id="nav-menu">
+      <a href="shop.html" class="nav-link">Shop</a>
+      <a href="special-packages.html" class="nav-link">Special Packages</a>
+      <a href="gifts.html" class="nav-link">Gifts</a>
+      <a href="about.html" class="nav-link">About Graceon</a>
+    </div>
+
+    <div class="navbar-right">
+      <div class="navbar-search">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+        </svg>
+        <input type="text" placeholder="Search cookies..." id="search-input" />
+      </div>
+      <button class="navbar-icon-btn" title="Account">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+          <circle cx="12" cy="7" r="4"/>
+        </svg>
+      </button>
+      <button class="navbar-icon-btn" id="cart-btn" title="Cart">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+          <line x1="3" y1="6" x2="21" y2="6"/>
+          <path d="M16 10a4 4 0 0 1-8 0"/>
+        </svg>
+        <span class="cart-badge" id="cart-count">0</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- HERO SECTION -->
+  <section class="hero">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <p class="hero-tag">✦ Artisan Cookie Company</p>
+      <h1 class="hero-title">Handcrafted Cookies,<br/>Baked with Love.</h1>
+      <p class="hero-subtitle">Premium cookies made from the world's finest ingredients — perfect for gifting or simply treating yourself.</p>
+      <div class="hero-actions">
+        <a href="shop.html" class="btn btn-primary">Shop Our Collection</a>
+        <a href="special-packages.html" class="btn btn-outline">View Special Packages</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- SEASONAL FAVORITES -->
+  <section class="section" id="seasonal">
+    <div class="container">
+      <h2 class="section-title">Our Seasonal Favorites</h2>
+      <p class="section-subtitle">Handpicked favourites — loved by our customers, made with care</p>
+      <div class="products-grid" id="featured-products">
+        <!-- Loaded by JS -->
+        <div class="product-skeleton"></div>
+        <div class="product-skeleton"></div>
+        <div class="product-skeleton"></div>
+        <div class="product-skeleton"></div>
+      </div>
+      <div class="section-cta">
+        <a href="shop.html" class="btn btn-secondary">View All Products</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY GRACEON SECTION -->
+  <section class="section why-section">
+    <div class="container">
+      <h2 class="section-title">Why Graceon?</h2>
+      <p class="section-subtitle">Every cookie tells a story of care, quality, and craftsmanship</p>
+      <div class="why-grid">
+        <div class="why-card">
+          <div class="why-icon">🌿</div>
+          <h3>Premium Ingredients</h3>
+          <p>We source only the finest ingredients — from single-origin chocolate to freshly milled flour.</p>
+        </div>
+        <div class="why-card">
+          <div class="why-icon">🤲</div>
+          <h3>Handcrafted with Care</h3>
+          <p>Every batch is handmade in small quantities to ensure consistent quality and freshness.</p>
+        </div>
+        <div class="why-card">
+          <div class="why-icon">🎁</div>
+          <h3>Beautiful Packaging</h3>
+          <p>Our signature green boxes make every delivery feel like a special occasion worth remembering.</p>
+        </div>
+        <div class="why-card">
+          <div class="why-icon">🚀</div>
+          <h3>Fast Delivery</h3>
+          <p>Fresh cookies delivered to your door — free shipping on all orders over ₦50,000.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GIFTS BANNER -->
+  <section class="gifts-banner">
+    <div class="gifts-banner-content">
+      <p class="gifts-banner-tag">✦ Perfect for Every Occasion</p>
+      <h2>Give the Gift of Grace</h2>
+      <p>From birthdays to thank-you gestures — our artisan gift boxes are curated to impress.</p>
+      <a href="gifts.html" class="btn btn-primary">Explore Gift Guide</a>
+    </div>
+  </section>
+
+  <!-- SPECIAL PACKAGES PREVIEW -->
+  <section class="section">
+    <div class="container">
+      <h2 class="section-title">Curated Just for Them</h2>
+      <p class="section-subtitle">Thoughtfully assembled packages for life's most delicious moments</p>
+      <div class="packages-preview-grid" id="featured-packages">
+        <!-- Loaded by JS -->
+        <div class="product-skeleton"></div>
+        <div class="product-skeleton"></div>
+      </div>
+      <div class="section-cta">
+        <a href="special-packages.html" class="btn btn-secondary">Browse All Packages</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- COOKIE CLUB BANNER -->
+  <section class="cookie-club">
+    <div class="cookie-club-content">
+      <h2>Join the Cookie Club 🍪</h2>
+      <p>Sign up and get <strong>15% off</strong> your first order. Plus early access to new flavours and seasonal drops.</p>
+      <form class="cookie-club-form" id="cookie-club-form">
+        <input type="email" placeholder="Enter your email address" required />
+        <button type="submit" class="btn btn-primary">Join Now</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="footer-logo">Grace<span>O</span>n</div>
+        <p>Handcrafted cookies made with premium ingredients and baked with love — delivered to your door.</p>
+        <div class="footer-social">
+          <a href="#" title="Instagram">📸</a>
+          <a href="#" title="Facebook">📘</a>
+          <a href="#" title="Twitter">🐦</a>
+          <a href="#" title="TikTok">🎵</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Shop</h4>
+        <ul>
+          <li><a href="shop.html">All Cookies</a></li>
+          <li><a href="special-packages.html">Special Packages</a></li>
+          <li><a href="gifts.html">Gift Boxes</a></li>
+          <li><a href="shop.html?filter=bestseller">Best Sellers</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="about.html">About Us</a></li>
+          <li><a href="#">Our Story</a></li>
+          <li><a href="#">Careers</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Help</h4>
+        <ul>
+          <li><a href="#">FAQ</a></li>
+          <li><a href="#">Shipping Info</a></li>
+          <li><a href="#">Returns</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 Graceon. All rights reserved.</p>
+      <p>Made with 🍪 and love.</p>
+    </div>
+  </footer>
+
+  <!-- CART SIDEBAR -->
+  <div class="cart-overlay" id="cart-overlay"></div>
+  <div class="cart-sidebar" id="cart-sidebar">
+    <div class="cart-header">
+      <h3>Your Cart 🛒</h3>
+      <span class="cart-close" id="cart-close">✕</span>
+    </div>
+    <div class="cart-items" id="cart-items">
+      <div class="cart-empty">
+        <div style="font-size:48px">🍪</div>
+        <p>Your cart is empty.<br/>Add some cookies!</p>
+      </div>
+    </div>
+    <div class="cart-footer">
+      <div class="cart-total">
+        <span>Total</span>
+        <span id="cart-total">₦0</span>
+      </div>
+      <button class="btn-checkout">Proceed to Checkout</button>
+    </div>
+  </div>
+
+  <!-- SCRIPTS -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase.js"></script>
+  <script src="js/cart.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

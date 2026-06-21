@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Account — Graceon</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/admin.css" />
+  <style>
+    .account-layout {
+      max-width: 1000px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+
+    .account-header {
+      margin-bottom: 32px;
+    }
+
+    .account-header h1 {
+      font-family: var(--font-serif);
+      font-size: 28px;
+      color: var(--dark);
+      margin-bottom: 4px;
+    }
+
+    .account-header p {
+      font-size: 14px;
+      color: var(--gray);
+    }
+
+    .account-grid {
+      display: grid;
+      grid-template-columns: 240px 1fr;
+      gap: 28px;
+    }
+
+    .account-sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .account-nav-link {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 16px;
+      border-radius: var(--radius-sm);
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--dark);
+      background: var(--white);
+      border: 1px solid var(--border);
+      cursor: pointer;
+      transition: var(--transition);
+      text-align: left;
+      width: 100%;
+    }
+
+    .account-nav-link:hover { background: var(--gray-light); }
+    .account-nav-link.active {
+      background: var(--green);
+      color: var(--white);
+      border-color: var(--green);
+    }
+
+    .account-nav-link.logout {
+      color: #c0392b;
+      margin-top: 12px;
+    }
+
+    .account-panel {
+      background: var(--white);
+      border-radius: var(--radius);
+      padding: 28px;
+      box-shadow: var(--shadow);
+    }
+
+    .account-panel h2 {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--dark);
+      margin-bottom: 20px;
+    }
+
+    .account-tab-content { display: none; }
+    .account-tab-content.active { display: block; }
+
+    .profile-info-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .profile-info-row:last-child { border-bottom: none; }
+
+    .profile-info-label {
+      font-size: 12px;
+      color: var(--gray);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .profile-info-value {
+      font-size: 14px;
+      color: var(--dark);
+      font-weight: 600;
+    }
+
+    .address-form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 16px;
+    }
+
+    .address-form-group label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--dark);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .address-form-group input,
+    .address-form-group select {
+      padding: 11px 14px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-size: 14px;
+      outline: none;
+      font-family: var(--font);
+    }
+
+    .address-form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .btn-save-address {
+      background: var(--green);
+      color: var(--white);
+      padding: 12px 24px;
+      border-radius: var(--radius-sm);
+      font-size: 14px;
+      font-weight: 700;
+      border: none;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .btn-save-address:hover { background: var(--green-dark); }
+
+    .order-card {
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 16px 20px;
+      margin-bottom: 14px;
+    }
+
+    .order-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .order-card-id {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--dark);
+    }
+
+    .order-card-date {
+      font-size: 12px;
+      color: var(--gray);
+    }
+
+    .order-card-items {
+      font-size: 13px;
+      color: var(--gray);
+      margin-bottom: 10px;
+    }
+
+    .order-card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .order-card-total {
+      font-weight: 700;
+      color: var(--green);
+    }
+
+    .empty-orders {
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--gray);
+    }
+
+    @media (max-width: 768px) {
+      .account-grid { grid-template-columns: 1fr; }
+      .account-sidebar { flex-direction: row; overflow-x: auto; }
+      .address-form-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="navbar-left">
+      <a href="index.html" class="navbar-logo">Grace<span>O</span>n</a>
+    </div>
+    <div class="navbar-right">
+      <a href="shop.html" style="font-size:13px; color:var(--gray);">← Continue Shopping</a>
+    </div>
+  </nav>
+
+  <div class="account-layout">
+    <div class="account-header">
+      <h1>My Account</h1>
+      <p id="account-welcome">Welcome back!</p>
+    </div>
+
+    <div class="account-grid">
+      <!-- SIDEBAR -->
+      <div class="account-sidebar">
+        <button class="account-nav-link active" onclick="switchTab('profile', this)">👤 Profile</button>
+        <button class="account-nav-link" onclick="switchTab('address', this)">📍 Shipping Address</button>
+        <button class="account-nav-link" onclick="switchTab('orders', this)">📦 Order History</button>
+        <button class="account-nav-link logout" onclick="customerLogout()">🚪 Log Out</button>
+      </div>
+
+      <!-- MAIN PANEL -->
+      <div class="account-panel">
+
+        <!-- PROFILE TAB -->
+        <div class="account-tab-content active" id="tab-profile">
+          <h2>Profile Information</h2>
+          <div id="profile-info">
+            <div class="profile-info-row">
+              <span class="profile-info-label">Loading...</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- ADDRESS TAB -->
+        <div class="account-tab-content" id="tab-address">
+          <h2>Shipping Address</h2>
+          <form id="address-form">
+            <div class="address-form-row">
+              <div class="address-form-group">
+                <label>First Name</label>
+                <input type="text" id="addr-firstname" />
+              </div>
+              <div class="address-form-group">
+                <label>Last Name</label>
+                <input type="text" id="addr-lastname" />
+              </div>
+            </div>
+            <div class="address-form-group">
+              <label>State</label>
+              <select id="addr-state">
+                <option value="">Select your state</option>
+                <option>Abia</option><option>Adamawa</option><option>Akwa Ibom</option>
+                <option>Anambra</option><option>Bauchi</option><option>Bayelsa</option>
+                <option>Benue</option><option>Borno</option><option>Cross River</option>
+                <option>Delta</option><option>Ebonyi</option><option>Edo</option>
+                <option>Ekiti</option><option>Enugu</option><option>FCT - Abuja</option>
+                <option>Gombe</option><option>Imo</option><option>Jigawa</option>
+                <option>Kaduna</option><option>Kano</option><option>Katsina</option>
+                <option>Kebbi</option><option>Kogi</option><option>Kwara</option>
+                <option>Lagos</option><option>Nasarawa</option><option>Niger</option>
+                <option>Ogun</option><option>Ondo</option><option>Osun</option>
+                <option>Oyo</option><option>Plateau</option><option>Rivers</option>
+                <option>Sokoto</option><option>Taraba</option><option>Yobe</option>
+                <option>Zamfara</option>
+              </select>
+            </div>
+            <div class="address-form-group">
+              <label>Address</label>
+              <input type="text" id="addr-address" placeholder="House number, street, area" />
+            </div>
+            <div class="address-form-group">
+              <label>Phone Number</label>
+              <input type="tel" id="addr-phone" placeholder="+234 800 000 0000" />
+            </div>
+            <button type="submit" class="btn-save-address">Save Address</button>
+          </form>
+        </div>
+
+        <!-- ORDERS TAB -->
+        <div class="account-tab-content" id="tab-orders">
+          <h2>Order History</h2>
+          <div id="orders-list">
+            <p style="color:var(--gray); font-size:13px;">Loading...</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase.js"></script>
+  <script src="js/cart.js"></script>
+  <script src="js/customer-auth.js"></script>
+  <script src="js/my-account.js"></script>
+</body>
+</html>

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Login — Graceon</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    body {
+      background: var(--green);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .admin-login-card {
+      background: var(--white);
+      border-radius: var(--radius);
+      padding: 48px 40px;
+      max-width: 400px;
+      width: 100%;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    }
+
+    .admin-login-logo {
+      text-align: center;
+      font-family: var(--font-serif);
+      font-size: 28px;
+      font-weight: bold;
+      color: var(--green);
+      margin-bottom: 8px;
+    }
+
+    .admin-login-logo span { color: var(--orange); }
+
+    .admin-login-subtitle {
+      text-align: center;
+      font-size: 13px;
+      color: var(--gray);
+      margin-bottom: 32px;
+    }
+
+    .admin-form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 18px;
+    }
+
+    .admin-form-group label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--dark);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .admin-form-group input {
+      padding: 12px 16px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-size: 14px;
+      outline: none;
+      transition: var(--transition);
+    }
+
+    .admin-form-group input:focus {
+      border-color: var(--green);
+      box-shadow: 0 0 0 3px rgba(27,107,53,0.1);
+    }
+
+    .admin-login-btn {
+      width: 100%;
+      background: var(--green);
+      color: var(--white);
+      padding: 14px;
+      border-radius: var(--radius-sm);
+      font-size: 15px;
+      font-weight: 700;
+      border: none;
+      cursor: pointer;
+      transition: var(--transition);
+      margin-top: 8px;
+    }
+
+    .admin-login-btn:hover { background: var(--green-dark); }
+    .admin-login-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+    .admin-error {
+      background: #fee;
+      color: #c0392b;
+      padding: 12px 16px;
+      border-radius: var(--radius-sm);
+      font-size: 13px;
+      margin-bottom: 18px;
+      display: none;
+    }
+
+    .admin-error.show { display: block; }
+
+    .admin-back-link {
+      display: block;
+      text-align: center;
+      margin-top: 24px;
+      font-size: 13px;
+      color: var(--gray);
+    }
+
+    .admin-back-link:hover { color: var(--green); }
+  </style>
+</head>
+<body>
+
+  <div class="admin-login-card">
+    <div class="admin-login-logo">Grace<span>O</span>n</div>
+    <p class="admin-login-subtitle">Admin Dashboard Login</p>
+
+    <div class="admin-error" id="admin-error"></div>
+
+    <form id="admin-login-form">
+      <div class="admin-form-group">
+        <label>Email Address</label>
+        <input type="email" id="admin-email" placeholder="you@graceon.com" required />
+      </div>
+      <div class="admin-form-group">
+        <label>Password</label>
+        <input type="password" id="admin-password" placeholder="••••••••" required />
+      </div>
+      <button type="submit" class="admin-login-btn" id="admin-login-btn">
+        Log In
+      </button>
+    </form>
+
+    <a href="index.html" class="admin-back-link">← Back to Graceon</a>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase.js"></script>
+  <script src="js/admin-auth.js"></script>
+</body>
+</html>

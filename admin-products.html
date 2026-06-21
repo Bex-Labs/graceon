@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Manage Products — Graceon Admin</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/admin.css" />
+</head>
+<body>
+
+  <div class="admin-layout">
+
+    <!-- SIDEBAR -->
+    <aside class="admin-sidebar">
+      <div class="admin-sidebar-logo">Grace<span>O</span>n <span class="admin-tag">Admin</span></div>
+
+      <nav class="admin-nav">
+        <a href="admin-dashboard.html" class="admin-nav-link">
+          <span>📊</span> Dashboard
+        </a>
+        <a href="admin-products.html" class="admin-nav-link active">
+          <span>🍪</span> Products
+        </a>
+        <a href="admin-packages.html" class="admin-nav-link">
+          <span>🎁</span> Packages
+        </a>
+        <a href="admin-orders.html" class="admin-nav-link">
+          <span>📦</span> Orders
+        </a>
+      </nav>
+
+      <div class="admin-sidebar-footer">
+        <a href="index.html" class="admin-nav-link">
+          <span>🌐</span> View Site
+        </a>
+        <button class="admin-logout-btn" onclick="adminLogout()">
+          <span>🚪</span> Log Out
+        </button>
+      </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="admin-main">
+      <header class="admin-header">
+        <h1>Manage Products</h1>
+        <p>Add, edit, or remove cookies from your shop</p>
+      </header>
+
+      <!-- TOOLBAR -->
+      <div class="admin-toolbar">
+        <div class="admin-search-box">
+          <span class="admin-search-icon">🔍</span>
+          <input type="text" id="product-search" placeholder="Search products..." />
+        </div>
+        <button class="btn-admin-add" onclick="openProductModal()">
+          ➕ Add New Product
+        </button>
+      </div>
+
+      <!-- PRODUCTS TABLE -->
+      <div class="admin-panel">
+        <div class="admin-table-wrap">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Image</th>
+                <th>Name</th>
+                <th>Category</th>
+                <th>Price</th>
+                <th>Badge</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="products-table-body">
+              <tr><td colspan="7" style="text-align:center; color:var(--gray)">Loading...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- ADD/EDIT PRODUCT MODAL -->
+  <div class="admin-modal-overlay" id="product-modal-overlay">
+    <div class="admin-modal">
+      <div class="admin-modal-header">
+        <h3 id="product-modal-title">Add New Product</h3>
+        <button class="admin-modal-close" onclick="closeProductModal()">✕</button>
+      </div>
+      <div class="admin-modal-body">
+        <input type="hidden" id="product-id" />
+
+        <div class="admin-form-group full">
+          <label>Product Name *</label>
+          <input type="text" id="product-name" placeholder="e.g. Sea Salt Dark Chocolate" />
+        </div>
+
+        <div class="admin-form-group full">
+          <label>Description</label>
+          <textarea id="product-description" rows="3" placeholder="Describe this product..."></textarea>
+        </div>
+
+        <div class="admin-form-row">
+          <div class="admin-form-group">
+            <label>Price ($) *</label>
+            <input type="number" id="product-price" step="0.01" placeholder="24.00" />
+          </div>
+          <div class="admin-form-group">
+            <label>Price Unit</label>
+            <input type="text" id="product-price-unit" placeholder="Dozen" value="Dozen" />
+          </div>
+        </div>
+
+        <div class="admin-form-row">
+          <div class="admin-form-group">
+            <label>Category</label>
+            <select id="product-category">
+              <option value="Classic Cookies">Classic Cookies</option>
+              <option value="Chocolate Dipped">Chocolate Dipped</option>
+              <option value="Filled Centers">Filled Centers</option>
+              <option value="Mini Bites">Mini Bites</option>
+            </select>
+          </div>
+          <div class="admin-form-group">
+            <label>Occasion</label>
+            <select id="product-occasion">
+              <option value="Birthday">Birthday</option>
+              <option value="Thank You">Thank You</option>
+              <option value="Celebration">Celebration</option>
+              <option value="Get Well">Get Well</option>
+              <option value="Anniversary">Anniversary</option>
+              <option value="Just Because">Just Because</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="admin-form-row">
+          <div class="admin-form-group">
+            <label>Badge</label>
+            <select id="product-badge">
+              <option value="">None</option>
+              <option value="Best Seller">Best Seller</option>
+              <option value="Limited Edition">Limited Edition</option>
+              <option value="Gluten Free">Gluten Free</option>
+              <option value="New">New</option>
+            </select>
+          </div>
+          <div class="admin-form-group">
+            <label>Dietary (comma separated)</label>
+            <input type="text" id="product-dietary" placeholder="Gluten Free, Vegan" />
+          </div>
+        </div>
+
+        <div class="admin-form-group full">
+          <label>Image URL</label>
+          <input type="text" id="product-image" placeholder="assets/images/product.jpg or https://..." />
+        </div>
+
+        <div class="admin-form-row">
+          <div class="admin-form-group">
+            <label>In Stock</label>
+            <select id="product-in-stock">
+              <option value="true">Yes</option>
+              <option value="false">No</option>
+            </select>
+          </div>
+          <div class="admin-form-group">
+            <label>Featured on Homepage</label>
+            <select id="product-featured">
+              <option value="false">No</option>
+              <option value="true">Yes</option>
+            </select>
+          </div>
+        </div>
+
+      </div>
+      <div class="admin-modal-footer">
+        <button class="btn-modal-cancel" onclick="closeProductModal()">Cancel</button>
+        <button class="btn-modal-save" id="product-save-btn" onclick="saveProduct()">Save Product</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase.js"></script>
+  <script src="js/admin-auth.js"></script>
+  <script src="js/cart.js"></script>
+  <script src="js/admin-products.js"></script>
+</body>
+</html>
