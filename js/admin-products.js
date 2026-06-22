@@ -2,6 +2,73 @@
 // GRACEON - Admin Products Management
 // =========================================
 
+// ---- Resend Email Config ----
+const RESEND_API_KEY = 're_RzbnirFi_K7FVfiKBNdSkDfzfJ6WS3i8X'; // Replace with your re_... key
+const RESEND_FROM = 'GraceOn Cookies <onboarding@resend.dev>'; // Update when domain is ready
+
+// ---- Send Restock Notification Emails ----
+async function sendRestockEmails(productId, productName) {
+  try {
+    // Fetch all waitlisted emails for this product
+    const { data: waitlist, error } = await supabaseClient
+      .from('stock_notifications')
+      .select('email')
+      .eq('product_id', productId);
+
+    if (error || !waitlist || waitlist.length === 0) return;
+
+    const emails = waitlist.map(r => r.email);
+
+    // Send one email per address
+    for (const email of emails) {
+      await fetch('https://api.resend.com/emails', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${RESEND_API_KEY}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          from: RESEND_FROM,
+          to: [email],
+          subject: `${productName} is back in stock! 🍪`,
+          html: `
+            <div style="font-family: Georgia, serif; max-width: 520px; margin: 0 auto; padding: 40px 24px; background: #FDFAF5;">
+              <div style="text-align: center; margin-bottom: 32px;">
+                <h1 style="color: #1B6B35; font-size: 28px; margin: 0;">GraceOn</h1>
+                <p style="color: #E07B00; font-size: 13px; letter-spacing: 2px; text-transform: uppercase; margin: 4px 0 0;">Artisan Cookies</p>
+              </div>
+              <h2 style="color: #1a1a1a; font-size: 22px; margin-bottom: 12px;">Great news — it's back! 🎉</h2>
+              <p style="color: #555; font-size: 15px; line-height: 1.7;">
+                <strong>${productName}</strong> is back in stock and ready to order. Don't wait too long — it sells fast!
+              </p>
+              <div style="text-align: center; margin: 32px 0;">
+                <a href="https://graceon-bx.vercel.app/shop.html"
+                  style="background: #1B6B35; color: white; padding: 14px 32px; border-radius: 8px; text-decoration: none; font-size: 15px; font-weight: 600;">
+                  Shop Now
+                </a>
+              </div>
+              <p style="color: #aaa; font-size: 12px; text-align: center; margin-top: 40px;">
+                © GraceOn Artisan Cookies. You received this because you requested a restock notification.
+              </p>
+            </div>
+          `
+        })
+      });
+    }
+
+    // Clear waitlist for this product now that emails are sent
+    await supabaseClient
+      .from('stock_notifications')
+      .delete()
+      .eq('product_id', productId);
+
+    console.log(`Restock emails sent to ${emails.length} customer(s) for "${productName}"`);
+
+  } catch (err) {
+    console.error('Failed to send restock emails:', err);
+  }
+}
+
 let allAdminProducts = [];
 let editingProductId = null;
 
@@ -160,19 +227,31 @@ async function saveProduct() {
     let error;
 
     if (editingProductId) {
+      // Check if product was previously out of stock and is now being restocked
+      const previousProduct = allAdminProducts.find(p => p.id === editingProductId);
+      const wasOutOfStock = previousProduct && previousProduct.in_stock === false;
+      const isNowInStock = productData.in_stock === true;
+
       // Update
       ({ error } = await supabaseClient
         .from('products')
         .update(productData)
         .eq('id', editingProductId));
+
+      if (error) throw error;
+
+      // Send restock emails if product just came back in stock
+      if (wasOutOfStock && isNowInStock) {
+        await sendRestockEmails(editingProductId, name);
+      }
     } else {
       // Insert
       ({ error } = await supabaseClient
         .from('products')
         .insert([productData]));
-    }
 
-    if (error) throw error;
+      if (error) throw error;
+    }
 
     showToast(editingProductId ? 'Product updated! 🍪' : 'Product added! 🍪');
     closeProductModal();

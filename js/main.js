@@ -2,6 +2,54 @@
 // GRACEON - Main JS (Shared across all pages)
 // =========================================
 
+// ---- Resend Email Config ----
+const RESEND_API_KEY = 're_RzbnirFi_K7FVfiKBNdSkDfzfJ6WS3i8X'; // Replace with your re_... key
+const RESEND_FROM = 'GraceOn Cookies <onboarding@resend.dev>'; // Update when domain is ready
+
+// ---- Send Waitlist Confirmation Email ----
+async function sendWaitlistConfirmationEmail(toEmail, productName) {
+  try {
+    await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${RESEND_API_KEY}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        from: RESEND_FROM,
+        to: [toEmail],
+        subject: `You're on the waitlist for ${productName} 🍪`,
+        html: `
+          <div style="font-family: Georgia, serif; max-width: 520px; margin: 0 auto; padding: 40px 24px; background: #FDFAF5;">
+            <div style="text-align: center; margin-bottom: 32px;">
+              <h1 style="color: #1B6B35; font-size: 28px; margin: 0;">GraceOn</h1>
+              <p style="color: #E07B00; font-size: 13px; letter-spacing: 2px; text-transform: uppercase; margin: 4px 0 0;">Artisan Cookies</p>
+            </div>
+            <h2 style="color: #1a1a1a; font-size: 22px; margin-bottom: 12px;">You're on the list! 🎉</h2>
+            <p style="color: #555; font-size: 15px; line-height: 1.7;">
+              We've saved your spot for <strong>${productName}</strong>. As soon as it's back in stock, you'll be the first to know.
+            </p>
+            <p style="color: #555; font-size: 15px; line-height: 1.7;">
+              In the meantime, feel free to explore our other freshly baked treats!
+            </p>
+            <div style="text-align: center; margin: 32px 0;">
+              <a href="https://graceon-bx.vercel.app/shop.html"
+                style="background: #1B6B35; color: white; padding: 14px 32px; border-radius: 8px; text-decoration: none; font-size: 15px; font-weight: 600;">
+                Browse Our Shop
+              </a>
+            </div>
+            <p style="color: #aaa; font-size: 12px; text-align: center; margin-top: 40px;">
+              © GraceOn Artisan Cookies. You received this because you signed up for a restock notification.
+            </p>
+          </div>
+        `
+      })
+    });
+  } catch (err) {
+    console.error('Failed to send waitlist confirmation email:', err);
+  }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
 
   // ---- Active Nav Link ----
@@ -344,6 +392,27 @@ async function saveNotifyRequest(productId, packageId, email, userId) {
     if (error) throw error;
 
     showToast("You'll be notified when it's back! 📧");
+
+    // Fetch product/package name for the confirmation email
+    let itemName = 'this item';
+    if (productId) {
+      const { data } = await supabaseClient
+        .from('products')
+        .select('name')
+        .eq('id', productId)
+        .single();
+      if (data?.name) itemName = data.name;
+    } else if (packageId) {
+      const { data } = await supabaseClient
+        .from('packages')
+        .select('name')
+        .eq('id', packageId)
+        .single();
+      if (data?.name) itemName = data.name;
+    }
+
+    // Send waitlist confirmation email
+    await sendWaitlistConfirmationEmail(email, itemName);
 
   } catch (err) {
     console.error('Error submitting notify request:', err);

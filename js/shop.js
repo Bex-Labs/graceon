@@ -2,6 +2,7 @@
 // GRACEON - Shop Page JS
 // =========================================
 
+
 let allProducts = [];
 let activeFilters = { category: [], occasion: [], dietary: [] };
 
