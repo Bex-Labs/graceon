@@ -726,6 +726,94 @@ button { cursor: pointer; border: none; background: none; font-family: var(--fon
 
 .btn-card-notify:hover { background: var(--green-dark); }
 
+.btn-card-notify-solo {
+  width: 100%;
+  background: var(--green);
+  color: var(--white);
+  padding: 10px;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  border: none;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.btn-card-notify-solo:hover { background: var(--green-dark); }
+
+/* NOTIFY ME POPUP (for guests) */
+.notify-popup-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 4000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.notify-popup-box {
+  background: var(--white);
+  border-radius: var(--radius);
+  padding: 32px;
+  max-width: 360px;
+  width: 100%;
+  text-align: center;
+  position: relative;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+}
+
+.notify-popup-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--gray-light);
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  color: var(--gray);
+}
+
+.notify-popup-icon {
+  font-size: 36px;
+  margin-bottom: 8px;
+}
+
+.notify-popup-box h3 {
+  font-family: var(--font-serif);
+  font-size: 20px;
+  color: var(--dark);
+  margin-bottom: 8px;
+}
+
+.notify-popup-subtitle {
+  font-size: 13px;
+  color: var(--gray);
+  margin-bottom: 18px;
+  line-height: 1.5;
+}
+
+.notify-popup-box input {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  outline: none;
+}
+
+.notify-popup-box input:focus {
+  border-color: var(--green);
+}
+
 /* SHARED OUT OF STOCK / NOTIFY ME BOX (used in Quick View modal and detail pages) */
 .out-of-stock-banner {
   background: #fee2e2;

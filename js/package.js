@@ -38,7 +38,6 @@ async function loadPackage(id) {
     renderPackage(data);
     loadOtherPackages(data.id);
     document.title = `${data.name} — Graceon Cookies`;
-    if (!data.in_stock) prefillNotifyEmail();
 
   } catch (err) {
     console.error('Error loading package:', err);
@@ -115,13 +114,9 @@ function renderPackage(pkg) {
             <span>😔 Currently Out of Stock</span>
           </div>
 
-          <div class="notify-me-box" id="notify-me-box">
-            <p class="notify-me-label">📧 Get notified when this is back!</p>
-            <div class="notify-me-row">
-              <input type="email" id="notify-email-input" placeholder="your@email.com" />
-              <button class="btn-notify-me" onclick="submitNotifyMe()">Notify Me</button>
-            </div>
-          </div>
+          <button class="btn-pkg-detail-cart" onclick="handleNotifyClick(null, '${pkg.id}')">
+            📧 Notify Me When Available
+          </button>
         `}
       </div>
 
@@ -265,50 +260,6 @@ function copyPackageLink() {
   navigator.clipboard.writeText(window.location.href).then(() => {
     showToast('Link copied to clipboard! 🔗');
   });
-}
-
-// ---- Notify Me ----
-async function submitNotifyMe() {
-  const emailInput = document.getElementById('notify-email-input');
-  const email = emailInput.value.trim();
-
-  if (!email || !email.includes('@')) {
-    showToast('Please enter a valid email address.');
-    return;
-  }
-
-  try {
-    const { data: { session } } = await supabaseClient.auth.getSession();
-
-    const { error } = await supabaseClient
-      .from('stock_notifications')
-      .insert([{
-        package_id: currentPackage.id,
-        email: email,
-        user_id: session?.user?.id || null
-      }]);
-
-    if (error) throw error;
-
-    document.getElementById('notify-me-box').innerHTML = `
-      <p class="notify-me-success">✅ We'll email you the moment this is back in stock!</p>
-    `;
-
-  } catch (err) {
-    console.error('Error submitting notify request:', err);
-    showToast('Something went wrong. Please try again.');
-  }
-}
-
-// ---- Pre-fill notify email if logged in ----
-async function prefillNotifyEmail() {
-  const input = document.getElementById('notify-email-input');
-  if (!input) return;
-
-  const { data: { session } } = await supabaseClient.auth.getSession();
-  if (session?.user?.email) {
-    input.value = session.user.email;
-  }
 }
 
 // ---- Error state ----

@@ -38,7 +38,6 @@ async function loadProduct(id) {
     renderProduct(data);
     loadRelatedProducts(data.category, data.id);
     updatePageTitle(data.name);
-    if (!data.in_stock) prefillNotifyEmail();
 
   } catch (err) {
     console.error('Error loading product:', err);
@@ -118,13 +117,9 @@ function renderProduct(product) {
             <span>😔 Currently Out of Stock</span>
           </div>
 
-          <div class="notify-me-box" id="notify-me-box">
-            <p class="notify-me-label">📧 Get notified when this is back!</p>
-            <div class="notify-me-row">
-              <input type="email" id="notify-email-input" placeholder="your@email.com" />
-              <button class="btn-notify-me" onclick="submitNotifyMe()">Notify Me</button>
-            </div>
-          </div>
+          <button class="btn-detail-cart" onclick="handleNotifyClick('${product.id}', null)">
+            📧 Notify Me When Available
+          </button>
         `}
       </div>
 
@@ -255,50 +250,6 @@ function getBadgeClass(badge) {
 // ---- Update page title ----
 function updatePageTitle(name) {
   document.title = `${name} — Graceon Cookies`;
-}
-
-// ---- Notify Me ----
-async function submitNotifyMe() {
-  const emailInput = document.getElementById('notify-email-input');
-  const email = emailInput.value.trim();
-
-  if (!email || !email.includes('@')) {
-    showToast('Please enter a valid email address.');
-    return;
-  }
-
-  try {
-    const { data: { session } } = await supabaseClient.auth.getSession();
-
-    const { error } = await supabaseClient
-      .from('stock_notifications')
-      .insert([{
-        product_id: currentProduct.id,
-        email: email,
-        user_id: session?.user?.id || null
-      }]);
-
-    if (error) throw error;
-
-    document.getElementById('notify-me-box').innerHTML = `
-      <p class="notify-me-success">✅ We'll email you the moment this is back in stock!</p>
-    `;
-
-  } catch (err) {
-    console.error('Error submitting notify request:', err);
-    showToast('Something went wrong. Please try again.');
-  }
-}
-
-// ---- Pre-fill notify email if logged in ----
-async function prefillNotifyEmail() {
-  const input = document.getElementById('notify-email-input');
-  if (!input) return;
-
-  const { data: { session } } = await supabaseClient.auth.getSession();
-  if (session?.user?.email) {
-    input.value = session.user.email;
-  }
 }
 
 // ---- Error state ----

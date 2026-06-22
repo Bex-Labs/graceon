@@ -103,10 +103,9 @@ function createPackageCard(pkg) {
           ` : ''}
         </div>
         ${!pkg.in_stock ? `
-          <div class="card-notify-row" onclick="event.stopPropagation()">
-            <input type="email" class="card-notify-input" id="notify-input-pkg-${pkg.id}" placeholder="your@email.com" onclick="event.stopPropagation()" />
-            <button class="btn-card-notify" onclick="event.stopPropagation(); submitCardNotify(null, '${pkg.id}')">Notify Me</button>
-          </div>
+          <button class="btn-card-notify-solo" onclick="event.stopPropagation(); handleNotifyClick(null, '${pkg.id}')">
+            📧 Notify Me
+          </button>
         ` : ''}
       </div>
     </div>

@@ -163,10 +163,9 @@ function createProductCard(product) {
               View Details
             </a>
           ` : `
-            <div class="card-notify-row">
-              <input type="email" class="card-notify-input" id="notify-input-${product.id}" placeholder="your@email.com" />
-              <button class="btn-card-notify" onclick="submitCardNotify('${product.id}', null)">Notify Me</button>
-            </div>
+            <button class="btn-card-notify-solo" onclick="handleNotifyClick('${product.id}', null)">
+              📧 Notify Me
+            </button>
             <a href="product.html?id=${product.id}" class="btn-quick-view">
               View Details
             </a>
@@ -213,10 +212,9 @@ function createPackageCard(pkg) {
               View Details
             </a>
           ` : `
-            <div class="card-notify-row">
-              <input type="email" class="card-notify-input" id="notify-input-pkg-${pkg.id}" placeholder="your@email.com" />
-              <button class="btn-card-notify" onclick="submitCardNotify(null, '${pkg.id}')">Notify Me</button>
-            </div>
+            <button class="btn-card-notify-solo" onclick="handleNotifyClick(null, '${pkg.id}')">
+              📧 Notify Me
+            </button>
             <a href="package.html?id=${pkg.id}" class="btn-quick-view">
               View Details
             </a>
@@ -311,23 +309,30 @@ async function accountDropdownLogout() {
   window.location.href = 'index.html';
 }
 
-// ---- Notify Me from Shop/Homepage card ----
-async function submitCardNotify(productId, packageId) {
-  const inputId = productId ? `notify-input-${productId}` : `notify-input-pkg-${packageId}`;
-  const input = document.getElementById(inputId);
-  const email = input?.value.trim();
-
-  if (!email || !email.includes('@')) {
-    showToast('Please enter a valid email address.');
-    return;
-  }
-
+// ---- Notify Me — smart click handler ----
+async function handleNotifyClick(productId, packageId) {
   try {
     const { data: { session } } = await supabaseClient.auth.getSession();
 
+    if (session?.user?.email) {
+      // Logged in — submit immediately using their account email
+      await saveNotifyRequest(productId, packageId, session.user.email, session.user.id);
+    } else {
+      // Guest — open the popup to ask for their email
+      openNotifyPopup(productId, packageId);
+    }
+  } catch (err) {
+    console.error('Error checking session:', err);
+    openNotifyPopup(productId, packageId);
+  }
+}
+
+// ---- Save notify request to Supabase ----
+async function saveNotifyRequest(productId, packageId, email, userId) {
+  try {
     const insertData = {
       email: email,
-      user_id: session?.user?.id || null
+      user_id: userId || null
     };
     if (productId) insertData.product_id = productId;
     if (packageId) insertData.package_id = packageId;
@@ -339,16 +344,51 @@ async function submitCardNotify(productId, packageId) {
     if (error) throw error;
 
     showToast("You'll be notified when it's back! 📧");
-    if (input) {
-      input.value = '';
-      input.placeholder = 'Subscribed! ✅';
-      input.disabled = true;
-    }
 
   } catch (err) {
     console.error('Error submitting notify request:', err);
     showToast('Something went wrong. Please try again.');
   }
+}
+
+// ---- Notify Me Popup (for guests) ----
+function openNotifyPopup(productId, packageId) {
+  document.getElementById('notify-popup-overlay')?.remove();
+
+  const overlay = document.createElement('div');
+  overlay.id = 'notify-popup-overlay';
+  overlay.className = 'notify-popup-overlay';
+  overlay.innerHTML = `
+    <div class="notify-popup-box">
+      <button class="notify-popup-close" onclick="closeNotifyPopup()">✕</button>
+      <p class="notify-popup-icon">📧</p>
+      <h3>Get Notified</h3>
+      <p class="notify-popup-subtitle">Enter your email and we'll let you know when this is back in stock.</p>
+      <input type="email" id="notify-popup-email" placeholder="your@email.com" />
+      <button class="btn btn-primary" style="width:100%; margin-top:12px;" onclick="submitNotifyPopup('${productId || ''}', '${packageId || ''}')">
+        Notify Me
+      </button>
+    </div>
+  `;
+  document.body.appendChild(overlay);
+  document.getElementById('notify-popup-email')?.focus();
+}
+
+function closeNotifyPopup() {
+  document.getElementById('notify-popup-overlay')?.remove();
+}
+
+async function submitNotifyPopup(productId, packageId) {
+  const input = document.getElementById('notify-popup-email');
+  const email = input?.value.trim();
+
+  if (!email || !email.includes('@')) {
+    showToast('Please enter a valid email address.');
+    return;
+  }
+
+  await saveNotifyRequest(productId || null, packageId || null, email, null);
+  closeNotifyPopup();
 }
 
 // ---- Currency Formatter (Naira) ----
