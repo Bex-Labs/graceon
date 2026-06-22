@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact Us — Graceon Cookies</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/about.css" />
+  <style>
+    .contact-hero {
+      position: relative;
+      height: 380px;
+      background: url('https://images.unsplash.com/photo-1486427944299-d1955d23e34d?w=1400') center/cover no-repeat;
+      display: flex;
+      align-items: center;
+    }
+    .contact-hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.55);
+    }
+    .contact-hero-content {
+      position: relative;
+      z-index: 1;
+      max-width: 600px;
+      padding: 0 48px;
+      color: white;
+    }
+    .contact-hero-content .about-hero-tag {
+      color: var(--orange);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+    .contact-hero-content h1 {
+      font-family: var(--font-serif);
+      font-size: 44px;
+      line-height: 1.15;
+      margin-bottom: 16px;
+      color: white;
+    }
+    .contact-hero-content p {
+      font-size: 16px;
+      line-height: 1.7;
+      color: rgba(255,255,255,0.85);
+    }
+
+    /* ---- Contact Grid ---- */
+    .contact-section {
+      padding: 80px 24px;
+    }
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.4fr;
+      gap: 64px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    /* ---- Contact Info ---- */
+    .contact-info h2 {
+      font-family: var(--font-serif);
+      font-size: 30px;
+      color: var(--dark);
+      margin-bottom: 8px;
+    }
+    .contact-info > p {
+      color: var(--gray);
+      font-size: 15px;
+      line-height: 1.7;
+      margin-bottom: 40px;
+    }
+    .contact-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+    .contact-icon {
+      font-size: 22px;
+      margin-top: 2px;
+      flex-shrink: 0;
+    }
+    .contact-item strong {
+      display: block;
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--dark);
+      margin-bottom: 4px;
+    }
+    .contact-item p, .contact-item a {
+      font-size: 15px;
+      color: var(--gray);
+      margin: 0;
+      text-decoration: none;
+      line-height: 1.6;
+    }
+    .contact-item a:hover {
+      color: var(--green);
+    }
+
+    /* ---- Social Links ---- */
+    .contact-social-title {
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--dark);
+      margin: 36px 0 16px;
+    }
+    .contact-social-links {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .contact-social-link {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 15px;
+      color: var(--gray);
+      text-decoration: none;
+      transition: var(--transition);
+    }
+    .contact-social-link:hover {
+      color: var(--green);
+    }
+    .contact-social-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      flex-shrink: 0;
+      transition: var(--transition);
+    }
+    .contact-social-link:hover .contact-social-icon {
+      background: var(--green-light);
+      border-color: var(--green);
+    }
+
+    /* ---- WhatsApp CTA ---- */
+    .whatsapp-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: #25D366;
+      color: white;
+      padding: 14px 24px;
+      border-radius: var(--radius-sm);
+      font-size: 15px;
+      font-weight: 600;
+      text-decoration: none;
+      margin-top: 8px;
+      transition: var(--transition);
+    }
+    .whatsapp-btn:hover {
+      background: #1ebe5d;
+      color: white;
+    }
+
+    /* ---- Contact Form ---- */
+    .contact-form-wrap {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 40px;
+      box-shadow: var(--shadow-sm);
+    }
+    .contact-form-wrap h3 {
+      font-family: var(--font-serif);
+      font-size: 24px;
+      color: var(--dark);
+      margin-bottom: 6px;
+    }
+    .contact-form-wrap > p {
+      color: var(--gray);
+      font-size: 14px;
+      margin-bottom: 28px;
+    }
+    .form-group {
+      margin-bottom: 20px;
+    }
+    .form-group label {
+      display: block;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--dark);
+      margin-bottom: 8px;
+    }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 12px 16px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-size: 14px;
+      color: var(--dark);
+      font-family: var(--font-sans);
+      transition: var(--transition);
+      box-sizing: border-box;
+    }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: var(--green);
+      box-shadow: 0 0 0 3px rgba(27, 107, 53, 0.1);
+    }
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    /* ---- Map Section ---- */
+    .contact-map-section {
+      background: var(--bg);
+      padding: 72px 24px;
+      text-align: center;
+    }
+    .contact-map-section h2 {
+      font-family: var(--font-serif);
+      font-size: 30px;
+      color: var(--dark);
+      margin-bottom: 8px;
+    }
+    .contact-map-section p {
+      color: var(--gray);
+      font-size: 15px;
+      margin-bottom: 32px;
+    }
+    .map-embed {
+      max-width: 900px;
+      margin: 0 auto;
+      border-radius: var(--radius);
+      overflow: hidden;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-sm);
+    }
+    .map-embed iframe {
+      width: 100%;
+      height: 400px;
+      border: none;
+      display: block;
+    }
+
+    @media (max-width: 768px) {
+      .contact-grid { grid-template-columns: 1fr; gap: 40px; }
+      .contact-hero-content { padding: 0 24px; }
+      .contact-hero-content h1 { font-size: 30px; }
+      .contact-form-wrap { padding: 28px 20px; }
+      .form-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ANNOUNCEMENT BAR -->
+  <div class="announcement-bar">
+    🍪 Free shipping on orders over ₦50,000! Use code <strong>GRACE50</strong>
+  </div>
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="navbar-left">
+      <div class="hamburger" id="hamburger">
+        <span></span><span></span><span></span>
+      </div>
+      <a href="index.html" class="navbar-logo">Grace<span>O</span>n</a>
+    </div>
+    <div class="navbar-center" id="nav-menu">
+      <a href="shop.html" class="nav-link">Shop</a>
+      <a href="special-packages.html" class="nav-link">Special Packages</a>
+      <a href="gifts.html" class="nav-link">Gifts</a>
+      <a href="about.html" class="nav-link">About Graceon</a>
+    </div>
+    <div class="navbar-right">
+      <div class="navbar-search">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+        </svg>
+        <input type="text" placeholder="Search cookies..." id="search-input" />
+      </div>
+      <div class="navbar-account-wrap">
+        <button class="navbar-icon-btn" id="account-btn" title="Account">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+            <circle cx="12" cy="7" r="4"/>
+          </svg>
+        </button>
+        <div class="account-dropdown" id="account-dropdown"></div>
+      </div>
+      <button class="navbar-icon-btn" id="cart-btn" title="Cart">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+          <line x1="3" y1="6" x2="21" y2="6"/>
+          <path d="M16 10a4 4 0 0 1-8 0"/>
+        </svg>
+        <span class="cart-badge" id="cart-count">0</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="contact-hero">
+    <div class="contact-hero-overlay"></div>
+    <div class="contact-hero-content">
+      <p class="about-hero-tag">✦ Contact Us</p>
+      <h1>We'd Love to<br/>Hear From You</h1>
+      <p>Have a question, want to place a bulk order, or just want to say hello? We're always happy to chat.</p>
+    </div>
+  </section>
+
+  <!-- CONTACT SECTION -->
+  <section class="contact-section">
+    <div class="contact-grid">
+
+      <!-- LEFT: Contact Info -->
+      <div class="contact-info">
+        <h2>Get in Touch</h2>
+        <p>Reach us through any of the channels below. We typically respond within one business day.</p>
+
+        <div class="contact-item">
+          <span class="contact-icon">📍</span>
+          <div>
+            <strong>Visit Us</strong>
+            <p>28 Jimoh Akinsanya Estate,<br/>Arepo, Ogun State, Nigeria</p>
+          </div>
+        </div>
+
+        <div class="contact-item">
+          <span class="contact-icon">📞</span>
+          <div>
+            <strong>Call Us</strong>
+            <a href="tel:+2348062819266">0806 281 9266</a>
+          </div>
+        </div>
+
+        <div class="contact-item">
+          <span class="contact-icon">💬</span>
+          <div>
+            <strong>WhatsApp</strong>
+            <a href="https://wa.me/2348055965322" target="_blank">0805 596 5322</a>
+          </div>
+        </div>
+
+        <a href="https://wa.me/2348055965322?text=Hello%20Graceon!%20I%20have%20a%20question%20about%20your%20cookies." target="_blank" class="whatsapp-btn">
+          💬 Chat on WhatsApp
+        </a>
+
+        <p class="contact-social-title">Follow Us</p>
+        <div class="contact-social-links">
+          <a href="https://instagram.com/graceon_cookies" target="_blank" class="contact-social-link">
+            <span class="contact-social-icon">📸</span>
+            @graceon_cookies on Instagram
+          </a>
+          <a href="https://facebook.com/krispyntastyfoods" target="_blank" class="contact-social-link">
+            <span class="contact-social-icon">📘</span>
+            Krispyntastyfoods on Facebook
+          </a>
+          <a href="https://youtube.com/@graceon" target="_blank" class="contact-social-link">
+            <span class="contact-social-icon">▶️</span>
+            Graceon on YouTube
+          </a>
+        </div>
+      </div>
+
+      <!-- RIGHT: Contact Form -->
+      <div class="contact-form-wrap">
+        <h3>Send Us a Message</h3>
+        <p>Fill in the form below and we'll get back to you as soon as possible.</p>
+        <form id="contact-form">
+          <div class="form-row">
+            <div class="form-group">
+              <label>First Name</label>
+              <input type="text" placeholder="e.g. Chioma" required />
+            </div>
+            <div class="form-group">
+              <label>Last Name</label>
+              <input type="text" placeholder="e.g. Adika" required />
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Email Address</label>
+            <input type="email" placeholder="yourname@example.com" required />
+          </div>
+          <div class="form-group">
+            <label>Phone Number (Optional)</label>
+            <input type="tel" placeholder="e.g. 0801 234 5678" />
+          </div>
+          <div class="form-group">
+            <label>Subject</label>
+            <select>
+              <option>General Enquiry</option>
+              <option>Corporate / Bulk Order</option>
+              <option>Product Question</option>
+              <option>Wholesale Partnership</option>
+              <option>Feedback</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Message</label>
+            <textarea placeholder="Tell us how we can help..." rows="5" required></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary" style="width:100%">Send Message</button>
+        </form>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- MAP SECTION -->
+  <section class="contact-map-section">
+    <p class="about-label">✦ Find Us</p>
+    <h2>Our Location</h2>
+    <p>28 Jimoh Akinsanya Estate, Arepo, Ogun State, Nigeria</p>
+    <div class="map-embed">
+      <iframe
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3963.0!2d3.38!3d6.72!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2sArepo%2C+Ogun+State%2C+Nigeria!5e0!3m2!1sen!2sng!4v1"
+        allowfullscreen=""
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade">
+      </iframe>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="footer-logo">Grace<span>O</span>n</div>
+        <p>Handcrafted cookies made with premium ingredients and baked with love — delivered to your door.</p>
+        <div class="footer-social">
+          <a href="https://instagram.com/graceon_cookies" target="_blank" title="Instagram">📸</a>
+          <a href="https://facebook.com/krispyntastyfoods" target="_blank" title="Facebook">📘</a>
+          <a href="https://youtube.com/@graceon" target="_blank" title="YouTube">▶️</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Shop</h4>
+        <ul>
+          <li><a href="shop.html">All Cookies</a></li>
+          <li><a href="special-packages.html">Special Packages</a></li>
+          <li><a href="gifts.html">Gift Boxes</a></li>
+          <li><a href="shop.html?filter=bestsellers">Best Sellers</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="about.html">About Us</a></li>
+          <li><a href="our-story.html">Our Story</a></li>
+          <li><a href="careers.html">Careers</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Help</h4>
+        <ul>
+          <li><a href="#">FAQ</a></li>
+          <li><a href="#">Shipping Info</a></li>
+          <li><a href="#">Returns</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 Graceon. All rights reserved.</p>
+      <p>Made with 🍪 and love.</p>
+    </div>
+  </footer>
+
+  <!-- CART SIDEBAR -->
+  <div class="cart-overlay" id="cart-overlay"></div>
+  <div class="cart-sidebar" id="cart-sidebar">
+    <div class="cart-header">
+      <h3>Your Cart 🛒</h3>
+      <span class="cart-close" id="cart-close">✕</span>
+    </div>
+    <div class="cart-items" id="cart-items">
+      <div class="cart-empty">
+        <div style="font-size:48px">🍪</div>
+        <p>Your cart is empty.<br/>Add some cookies!</p>
+      </div>
+    </div>
+    <div class="cart-footer">
+      <div class="cart-total">
+        <span>Total</span>
+        <span id="cart-total">₦0</span>
+      </div>
+      <button class="btn-checkout">Proceed to Checkout</button>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase.js"></script>
+  <script src="js/cart.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

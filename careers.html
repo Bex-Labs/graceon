@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Careers — Graceon Cookies</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/about.css" />
+  <style>
+    .careers-hero {
+      position: relative;
+      height: 400px;
+      background: url('https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=1400') center/cover no-repeat;
+      display: flex;
+      align-items: center;
+    }
+    .careers-hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.58);
+    }
+    .careers-hero-content {
+      position: relative;
+      z-index: 1;
+      max-width: 640px;
+      padding: 0 48px;
+      color: white;
+    }
+    .careers-hero-content .about-hero-tag {
+      color: var(--orange);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+    .careers-hero-content h1 {
+      font-family: var(--font-serif);
+      font-size: 46px;
+      line-height: 1.15;
+      margin-bottom: 16px;
+      color: white;
+    }
+    .careers-hero-content p {
+      font-size: 16px;
+      line-height: 1.7;
+      color: rgba(255,255,255,0.85);
+    }
+
+    /* ---- Intro Section ---- */
+    .careers-intro {
+      max-width: 780px;
+      margin: 0 auto;
+      padding: 72px 24px 48px;
+      text-align: center;
+    }
+    .careers-intro h2 {
+      font-family: var(--font-serif);
+      font-size: 32px;
+      color: var(--dark);
+      margin-bottom: 16px;
+    }
+    .careers-intro p {
+      font-size: 16px;
+      color: var(--gray);
+      line-height: 1.9;
+      margin-bottom: 16px;
+    }
+
+    /* ---- Areas Grid ---- */
+    .careers-areas {
+      background: var(--bg);
+      padding: 72px 24px;
+    }
+    .careers-areas-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      max-width: 1000px;
+      margin: 48px auto 0;
+    }
+    .careers-area-card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 32px 24px;
+      text-align: center;
+      box-shadow: var(--shadow-sm);
+      transition: var(--transition);
+    }
+    .careers-area-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow);
+      border-color: var(--green);
+    }
+    .careers-area-icon {
+      font-size: 36px;
+      margin-bottom: 16px;
+    }
+    .careers-area-card h3 {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--dark);
+      margin-bottom: 8px;
+    }
+    .careers-area-card p {
+      font-size: 14px;
+      color: var(--gray);
+      line-height: 1.6;
+    }
+
+    /* ---- Why Work With Us ---- */
+    .careers-why {
+      padding: 72px 24px;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    .careers-why-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 32px;
+      margin-top: 48px;
+    }
+    .careers-why-item {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+    }
+    .careers-why-icon {
+      font-size: 28px;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .careers-why-item h3 {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--dark);
+      margin-bottom: 6px;
+    }
+    .careers-why-item p {
+      font-size: 14px;
+      color: var(--gray);
+      line-height: 1.7;
+    }
+
+    /* ---- Apply CTA ---- */
+    .careers-cta {
+      background: var(--green);
+      padding: 80px 24px;
+      text-align: center;
+      color: white;
+    }
+    .careers-cta .about-label {
+      color: var(--orange);
+    }
+    .careers-cta h2 {
+      font-family: var(--font-serif);
+      font-size: 34px;
+      color: white;
+      margin: 16px auto 16px;
+      max-width: 560px;
+      line-height: 1.3;
+    }
+    .careers-cta p {
+      font-size: 16px;
+      color: rgba(255,255,255,0.88);
+      max-width: 520px;
+      margin: 0 auto 32px;
+      line-height: 1.8;
+    }
+    .careers-cta-buttons {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .btn-outline-white {
+      border: 2px solid white;
+      color: white;
+      background: transparent;
+      padding: 14px 32px;
+      border-radius: var(--radius-sm);
+      font-size: 15px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: var(--transition);
+      display: inline-block;
+    }
+    .btn-outline-white:hover {
+      background: white;
+      color: var(--green);
+    }
+    .btn-whatsapp {
+      background: #25D366;
+      color: white;
+      padding: 14px 32px;
+      border-radius: var(--radius-sm);
+      font-size: 15px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: var(--transition);
+      display: inline-block;
+    }
+    .btn-whatsapp:hover {
+      background: #1ebe5d;
+      color: white;
+    }
+
+    @media (max-width: 768px) {
+      .careers-hero-content { padding: 0 24px; }
+      .careers-hero-content h1 { font-size: 30px; }
+      .careers-areas-grid { grid-template-columns: 1fr 1fr; }
+      .careers-why-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 480px) {
+      .careers-areas-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ANNOUNCEMENT BAR -->
+  <div class="announcement-bar">
+    🍪 Free shipping on orders over ₦50,000! Use code <strong>GRACE50</strong>
+  </div>
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="navbar-left">
+      <div class="hamburger" id="hamburger">
+        <span></span><span></span><span></span>
+      </div>
+      <a href="index.html" class="navbar-logo">Grace<span>O</span>n</a>
+    </div>
+    <div class="navbar-center" id="nav-menu">
+      <a href="shop.html" class="nav-link">Shop</a>
+      <a href="special-packages.html" class="nav-link">Special Packages</a>
+      <a href="gifts.html" class="nav-link">Gifts</a>
+      <a href="about.html" class="nav-link">About Graceon</a>
+    </div>
+    <div class="navbar-right">
+      <div class="navbar-search">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+        </svg>
+        <input type="text" placeholder="Search cookies..." id="search-input" />
+      </div>
+      <div class="navbar-account-wrap">
+        <button class="navbar-icon-btn" id="account-btn" title="Account">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+            <circle cx="12" cy="7" r="4"/>
+          </svg>
+        </button>
+        <div class="account-dropdown" id="account-dropdown"></div>
+      </div>
+      <button class="navbar-icon-btn" id="cart-btn" title="Cart">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+          <line x1="3" y1="6" x2="21" y2="6"/>
+          <path d="M16 10a4 4 0 0 1-8 0"/>
+        </svg>
+        <span class="cart-badge" id="cart-count">0</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="careers-hero">
+    <div class="careers-hero-overlay"></div>
+    <div class="careers-hero-content">
+      <p class="about-hero-tag">✦ Careers</p>
+      <h1>Grow With Us.<br/>Bake the Future.</h1>
+      <p>Join a passionate team that believes great people create great products.</p>
+    </div>
+  </section>
+
+  <!-- INTRO -->
+  <section class="careers-intro">
+    <p class="about-label" style="text-align:center">✦ Join Our Team</p>
+    <h2>Great People Create Great Products</h2>
+    <p>At Graceon Cookies, we are always looking for passionate, creative, and dedicated individuals who share our commitment to quality, innovation, and customer satisfaction.</p>
+    <p>Whether your strengths are in production, sales, marketing, logistics, or administration, we welcome talented people who are eager to grow with us and make a positive impact.</p>
+  </section>
+
+  <!-- AREAS -->
+  <section class="careers-areas">
+    <div class="container">
+      <p class="about-label" style="text-align:center">✦ Where You Could Fit</p>
+      <h2 class="section-title">Areas We Hire In</h2>
+      <p class="section-subtitle">We welcome talent across all parts of our business</p>
+      <div class="careers-areas-grid">
+        <div class="careers-area-card">
+          <div class="careers-area-icon">🍪</div>
+          <h3>Production</h3>
+          <p>Hands-on roles in baking, quality control, and packaging — keeping our cookies consistently excellent.</p>
+        </div>
+        <div class="careers-area-card">
+          <div class="careers-area-icon">📈</div>
+          <h3>Sales</h3>
+          <p>Building relationships with distributors, retailers, and corporate clients across Nigeria.</p>
+        </div>
+        <div class="careers-area-card">
+          <div class="careers-area-icon">📣</div>
+          <h3>Marketing</h3>
+          <p>Telling the Graceon story — social media, content creation, brand campaigns, and customer engagement.</p>
+        </div>
+        <div class="careers-area-card">
+          <div class="careers-area-icon">🚚</div>
+          <h3>Logistics</h3>
+          <p>Ensuring our cookies reach customers fresh and on time — supply chain, delivery, and distribution.</p>
+        </div>
+        <div class="careers-area-card">
+          <div class="careers-area-icon">🏢</div>
+          <h3>Administration</h3>
+          <p>Supporting the business behind the scenes — operations, finance, HR, and customer service.</p>
+        </div>
+        <div class="careers-area-card">
+          <div class="careers-area-icon">💡</div>
+          <h3>Innovation</h3>
+          <p>Developing new flavours, products, and packaging ideas that keep Graceon ahead of the curve.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY WORK WITH US -->
+  <section class="section">
+    <div class="careers-why">
+      <p class="about-label" style="text-align:center">✦ Why Graceon</p>
+      <h2 class="section-title">Why Work With Us</h2>
+      <p class="section-subtitle">More than a job — a place to grow and make an impact</p>
+      <div class="careers-why-grid">
+        <div class="careers-why-item">
+          <span class="careers-why-icon">🌱</span>
+          <div>
+            <h3>Room to Grow</h3>
+            <p>We invest in our people. As our business expands, so do the opportunities for those who grow with us.</p>
+          </div>
+        </div>
+        <div class="careers-why-item">
+          <span class="careers-why-icon">🤝</span>
+          <div>
+            <h3>Supportive Team</h3>
+            <p>We work as a family — collaborative, encouraging, and committed to each other's success.</p>
+          </div>
+        </div>
+        <div class="careers-why-item">
+          <span class="careers-why-icon">🇳🇬</span>
+          <div>
+            <h3>Proudly Nigerian</h3>
+            <p>Be part of a brand that is proving Nigerian-made products can compete with the best in the world.</p>
+          </div>
+        </div>
+        <div class="careers-why-item">
+          <span class="careers-why-icon">✨</span>
+          <div>
+            <h3>Meaningful Work</h3>
+            <p>Every role at Graceon contributes to bringing joy to people's lives — one cookie at a time.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- APPLY CTA -->
+  <section class="careers-cta">
+    <p class="about-label">✦ Get In Touch</p>
+    <h2>Ready to Join the Graceon Family?</h2>
+    <p>To explore current opportunities or submit your CV, reach out to us. We would love to hear from you.</p>
+    <div class="careers-cta-buttons">
+      <a href="https://wa.me/2348055965322?text=Hello!%20I%20am%20interested%20in%20career%20opportunities%20at%20Graceon%20Cookies." target="_blank" class="btn-whatsapp">
+        💬 Send Your CV on WhatsApp
+      </a>
+      <a href="contact.html" class="btn-outline-white">
+        Contact Us
+      </a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="footer-logo">Grace<span>O</span>n</div>
+        <p>Handcrafted cookies made with premium ingredients and baked with love — delivered to your door.</p>
+        <div class="footer-social">
+          <a href="https://instagram.com/graceon_cookies" target="_blank" title="Instagram">📸</a>
+          <a href="https://facebook.com/krispyntastyfoods" target="_blank" title="Facebook">📘</a>
+          <a href="https://youtube.com/@graceon" target="_blank" title="YouTube">▶️</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Shop</h4>
+        <ul>
+          <li><a href="shop.html">All Cookies</a></li>
+          <li><a href="special-packages.html">Special Packages</a></li>
+          <li><a href="gifts.html">Gift Boxes</a></li>
+          <li><a href="shop.html?filter=bestsellers">Best Sellers</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="about.html">About Us</a></li>
+          <li><a href="our-story.html">Our Story</a></li>
+          <li><a href="careers.html">Careers</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Help</h4>
+        <ul>
+          <li><a href="#">FAQ</a></li>
+          <li><a href="#">Shipping Info</a></li>
+          <li><a href="#">Returns</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 Graceon. All rights reserved.</p>
+      <p>Made with 🍪 and love.</p>
+    </div>
+  </footer>
+
+  <!-- CART SIDEBAR -->
+  <div class="cart-overlay" id="cart-overlay"></div>
+  <div class="cart-sidebar" id="cart-sidebar">
+    <div class="cart-header">
+      <h3>Your Cart 🛒</h3>
+      <span class="cart-close" id="cart-close">✕</span>
+    </div>
+    <div class="cart-items" id="cart-items">
+      <div class="cart-empty">
+        <div style="font-size:48px">🍪</div>
+        <p>Your cart is empty.<br/>Add some cookies!</p>
+      </div>
+    </div>
+    <div class="cart-footer">
+      <div class="cart-total">
+        <span>Total</span>
+        <span id="cart-total">₦0</span>
+      </div>
+      <button class="btn-checkout">Proceed to Checkout</button>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase.js"></script>
+  <script src="js/cart.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
