@@ -2,22 +2,17 @@
 // GRACEON - Main JS (Shared across all pages)
 // =========================================
 
-// ---- Resend Email Config ----
-const RESEND_API_KEY = 're_RzbnirFi_K7FVfiKBNdSkDfzfJ6WS3i8X'; // Replace with your re_... key
-const RESEND_FROM = 'GraceOn Cookies <onboarding@resend.dev>'; // Update when domain is ready
+// ---- Edge Function URL ----
+const SEND_EMAIL_FN = 'https://pvzabostsjzxnmnbqvul.supabase.co/functions/v1/send-email';
 
 // ---- Send Waitlist Confirmation Email ----
 async function sendWaitlistConfirmationEmail(toEmail, productName) {
   try {
-    await fetch('https://api.resend.com/emails', {
+    await fetch(SEND_EMAIL_FN, {
       method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${RESEND_API_KEY}`,
-        'Content-Type': 'application/json'
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        from: RESEND_FROM,
-        to: [toEmail],
+        to: toEmail,
         subject: `You're on the waitlist for ${productName} 🍪`,
         html: `
           <div style="font-family: Georgia, serif; max-width: 520px; margin: 0 auto; padding: 40px 24px; background: #FDFAF5;">

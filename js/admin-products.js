@@ -2,14 +2,12 @@
 // GRACEON - Admin Products Management
 // =========================================
 
-// ---- Resend Email Config ----
-const RESEND_API_KEY = 're_RzbnirFi_K7FVfiKBNdSkDfzfJ6WS3i8X'; // Replace with your re_... key
-const RESEND_FROM = 'GraceOn Cookies <onboarding@resend.dev>'; // Update when domain is ready
+// ---- Edge Function URL ----
+const SEND_EMAIL_FN = 'https://pvzabostsjzxnmnbqvul.supabase.co/functions/v1/send-email';
 
 // ---- Send Restock Notification Emails ----
 async function sendRestockEmails(productId, productName) {
   try {
-    // Fetch all waitlisted emails for this product
     const { data: waitlist, error } = await supabaseClient
       .from('stock_notifications')
       .select('email')
@@ -19,17 +17,12 @@ async function sendRestockEmails(productId, productName) {
 
     const emails = waitlist.map(r => r.email);
 
-    // Send one email per address
     for (const email of emails) {
-      await fetch('https://api.resend.com/emails', {
+      await fetch(SEND_EMAIL_FN, {
         method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${RESEND_API_KEY}`,
-          'Content-Type': 'application/json'
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          from: RESEND_FROM,
-          to: [email],
+          to: email,
           subject: `${productName} is back in stock! 🍪`,
           html: `
             <div style="font-family: Georgia, serif; max-width: 520px; margin: 0 auto; padding: 40px 24px; background: #FDFAF5;">
@@ -56,7 +49,6 @@ async function sendRestockEmails(productId, productName) {
       });
     }
 
-    // Clear waitlist for this product now that emails are sent
     await supabaseClient
       .from('stock_notifications')
       .delete()
