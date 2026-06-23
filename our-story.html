@@ -11,7 +11,7 @@
     .story-hero {
       position: relative;
       height: 480px;
-      background: url('https://images.unsplash.com/photo-1558961363-fa8fdf82db35?w=1400') center/cover no-repeat;
+      background: url('https://pvzabostsjzxnmnbqvul.supabase.co/storage/v1/object/public/graceon-images/hero/homepage-hero.jpg') center/cover no-repeat;
       display: flex;
       align-items: center;
     }
@@ -168,40 +168,6 @@
       .story-mission h2 { font-size: 26px; }
     }
   </style>
-  <style>
-    .nav-dropdown { position: relative; display: inline-block; }
-    .nav-dropdown-trigger { display: flex; align-items: center; gap: 5px; cursor: pointer; user-select: none; }
-    .nav-dropdown-trigger .dropdown-arrow { font-size: 10px; transition: transform 0.2s ease; display: inline-block; }
-    .nav-dropdown.open .dropdown-arrow { transform: rotate(180deg); }
-    .nav-dropdown-menu {
-      display: none;
-      position: absolute;
-      top: calc(100% + 12px);
-      left: 50%;
-      transform: translateX(-50%);
-      background: white;
-      border: 1px solid var(--border);
-      border-radius: var(--radius-sm);
-      box-shadow: 0 8px 24px rgba(0,0,0,0.15);
-      min-width: 180px;
-      z-index: 9999;
-      overflow: hidden;
-    }
-    .nav-dropdown.open .nav-dropdown-menu { display: block; }
-    .nav-dropdown-item {
-      display: block;
-      padding: 13px 20px;
-      font-size: 14px;
-      color: var(--dark);
-      text-decoration: none;
-      transition: background 0.15s;
-      border-bottom: 1px solid var(--border);
-      font-weight: 500;
-      white-space: nowrap;
-    }
-    .nav-dropdown-item:last-child { border-bottom: none; }
-    .nav-dropdown-item:hover { background: var(--green-light); color: var(--green); }
-  </style>
 </head>
 <body>
 
@@ -216,21 +182,13 @@
       <div class="hamburger" id="hamburger">
         <span></span><span></span><span></span>
       </div>
-      <a href="index.html" class="navbar-logo">Grace<span>O</span>n</a>
+      <a href="index.html" class="navbar-logo"><img src="https://pvzabostsjzxnmnbqvul.supabase.co/storage/v1/object/public/graceon-images/logo/graceon-logo.jpeg" alt="GraceOn" style="height:40px; width:auto; object-fit:contain;" /></a>
     </div>
     <div class="navbar-center" id="nav-menu">
       <a href="shop.html" class="nav-link">Shop</a>
       <a href="special-packages.html" class="nav-link">Special Packages</a>
       <a href="gifts.html" class="nav-link">Gifts</a>
-      <div class="nav-dropdown" id="about-dropdown">
-        <a href="about.html" class="nav-link nav-dropdown-trigger active" onclick="toggleAboutDropdown(event)">About Graceon <span class="dropdown-arrow">▾</span></a>
-        <div class="nav-dropdown-menu">
-          <a href="about.html" class="nav-dropdown-item">About Us</a>
-          <a href="our-story.html" class="nav-dropdown-item">Our Story</a>
-          <a href="careers.html" class="nav-dropdown-item">Careers</a>
-          <a href="contact.html" class="nav-dropdown-item">Contact</a>
-        </div>
-      </div>
+      <a href="about.html" class="nav-link active">About Graceon</a>
     </div>
     <div class="navbar-right">
       <div class="navbar-search">
@@ -365,9 +323,10 @@
         <div class="footer-logo">Grace<span>O</span>n</div>
         <p>Handcrafted cookies made with premium ingredients and baked with love — delivered to your door.</p>
         <div class="footer-social">
-          <a href="https://instagram.com/graceon_cookies" target="_blank" title="Instagram">📸</a>
-          <a href="https://facebook.com/krispyntastyfoods" target="_blank" title="Facebook">📘</a>
-          <a href="https://youtube.com/@graceon" target="_blank" title="YouTube">▶️</a>
+          <a href="#" title="Instagram">📸</a>
+          <a href="#" title="Facebook">📘</a>
+          <a href="#" title="Twitter">🐦</a>
+          <a href="#" title="TikTok">🎵</a>
         </div>
       </div>
       <div class="footer-col">
@@ -430,18 +389,5 @@
   <script src="js/supabase.js"></script>
   <script src="js/cart.js"></script>
   <script src="js/main.js"></script>
-  <script>
-    function toggleAboutDropdown(e) {
-      e.preventDefault();
-      const dropdown = document.getElementById('about-dropdown');
-      dropdown.classList.toggle('open');
-    }
-    document.addEventListener('click', function(e) {
-      const dropdown = document.getElementById('about-dropdown');
-      if (dropdown && !dropdown.contains(e.target)) {
-        dropdown.classList.remove('open');
-      }
-    });
-  </script>
 </body>
 </html>
