@@ -6,6 +6,40 @@
   <title>Gifts — Graceon Cookies</title>
   <link rel="stylesheet" href="css/style.css" />
   <link rel="stylesheet" href="css/gifts.css" />
+  <style>
+    .nav-dropdown { position: relative; display: inline-block; }
+    .nav-dropdown-trigger { display: flex; align-items: center; gap: 5px; cursor: pointer; user-select: none; }
+    .nav-dropdown-trigger .dropdown-arrow { font-size: 10px; transition: transform 0.2s ease; display: inline-block; }
+    .nav-dropdown.open .dropdown-arrow { transform: rotate(180deg); }
+    .nav-dropdown-menu {
+      display: none;
+      position: absolute;
+      top: calc(100% + 12px);
+      left: 50%;
+      transform: translateX(-50%);
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+      min-width: 180px;
+      z-index: 9999;
+      overflow: hidden;
+    }
+    .nav-dropdown.open .nav-dropdown-menu { display: block; }
+    .nav-dropdown-item {
+      display: block;
+      padding: 13px 20px;
+      font-size: 14px;
+      color: var(--dark);
+      text-decoration: none;
+      transition: background 0.15s;
+      border-bottom: 1px solid var(--border);
+      font-weight: 500;
+      white-space: nowrap;
+    }
+    .nav-dropdown-item:last-child { border-bottom: none; }
+    .nav-dropdown-item:hover { background: var(--green-light); color: var(--green); }
+  </style>
 </head>
 <body>
 
@@ -211,5 +245,18 @@
   <script src="js/cart.js"></script>
   <script src="js/main.js"></script>
   <script src="js/gifts.js"></script>
+  <script>
+    function toggleAboutDropdown(e) {
+      e.preventDefault();
+      const dropdown = document.getElementById('about-dropdown');
+      dropdown.classList.toggle('open');
+    }
+    document.addEventListener('click', function(e) {
+      const dropdown = document.getElementById('about-dropdown');
+      if (dropdown && !dropdown.contains(e.target)) {
+        dropdown.classList.remove('open');
+      }
+    });
+  </script>
 </body>
 </html>
