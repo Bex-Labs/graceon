@@ -85,6 +85,7 @@ function openPackageModal() {
   document.getElementById('package-name').value = '';
   document.getElementById('package-description').value = '';
   document.getElementById('package-price').value = '';
+  document.getElementById('package-price-unit').value = '';
   document.getElementById('package-type').value = 'Birthday Celebration';
   document.getElementById('package-contents').value = '';
   document.getElementById('package-badge').value = '';
@@ -106,6 +107,7 @@ function editPackage(id) {
   document.getElementById('package-name').value = pkg.name || '';
   document.getElementById('package-description').value = pkg.description || '';
   document.getElementById('package-price').value = pkg.price || '';
+  document.getElementById('package-price-unit').value = pkg.price_unit || '';
   document.getElementById('package-type').value = pkg.package_type || 'Birthday Celebration';
   document.getElementById('package-contents').value = (pkg.contents || []).join('\n');
   document.getElementById('package-badge').value = pkg.badge || '';
@@ -142,6 +144,7 @@ async function savePackage() {
     name,
     description: document.getElementById('package-description').value.trim(),
     price,
+    price_unit: document.getElementById('package-price-unit').value || null,
     package_type: document.getElementById('package-type').value,
     contents,
     badge: document.getElementById('package-badge').value || null,

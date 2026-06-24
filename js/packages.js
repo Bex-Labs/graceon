@@ -90,7 +90,10 @@ function createPackageCard(pkg) {
         <p class="package-card-desc">${pkg.description || ''}</p>
         ${contents}
         <div class="package-card-footer">
-          <span class="package-card-price">${formatNaira(pkg.price)}</span>
+          <span class="package-card-price">
+            ${formatNaira(pkg.price)}
+            ${pkg.price_unit ? `<span style="font-size:12px; font-weight:400; color:var(--gray); margin-left:4px;">/ ${pkg.price_unit}</span>` : ''}
+          </span>
           ${pkg.in_stock ? `
             <button class="btn-pkg-cart" onclick='event.stopPropagation(); addToCart(${JSON.stringify({
               id: pkg.id,
