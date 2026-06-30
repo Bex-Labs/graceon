@@ -202,13 +202,11 @@ function renderSummary() {
   }
 
   const subtotal = getCartTotal();
-  const shipping = subtotal >= 50000 ? 0 : 2500;
   const isGift = document.getElementById('is-gift-toggle')?.checked;
   const wrapCost = isGift ? selectedWrapPrice : 0;
-  const total = subtotal + shipping + wrapCost;
+  const total = subtotal + wrapCost;
 
   document.getElementById('summary-subtotal').textContent = formatNaira(subtotal);
-  document.getElementById('summary-shipping').textContent = shipping === 0 ? 'Free' : formatNaira(shipping);
   document.getElementById('summary-total').textContent = formatNaira(total);
 
   const wrapRow = document.getElementById('summary-wrap-row');
@@ -258,27 +256,76 @@ function val(id) {
 // ---- Place Order ----
 async function placeOrder() {
   const btn = document.querySelector('.btn-place-order');
-  btn.textContent = 'Placing Order...';
-  btn.disabled = true;
+  const paymentVal = document.querySelector('input[name="payment"]:checked')?.value || 'card';
 
   const isGift = document.getElementById('is-gift-toggle')?.checked;
   const wrapVal = document.querySelector('input[name="gift-wrap"]:checked')?.value || 'none';
-  const paymentVal = document.querySelector('input[name="payment"]:checked')?.value || 'card';
-
   const subtotal = getCartTotal();
-  const shipping = subtotal >= 50000 ? 0 : 2500;
   const wrapPrices = { none: 0, ribbon: 2500, premium: 5000 };
   const wrapCost = isGift ? wrapPrices[wrapVal] : 0;
-  const total = subtotal + shipping + wrapCost;
+  const total = subtotal + wrapCost;
 
+  // For bank transfer or cash on delivery — save order directly
+  if (paymentVal === 'transfer' || paymentVal === 'cod') {
+    btn.textContent = 'Placing Order...';
+    btn.disabled = true;
+    await saveOrderToSupabase(total, isGift, wrapVal, 'pending');
+    btn.textContent = '🍪 Place Order';
+    btn.disabled = false;
+    return;
+  }
+
+  // For card payment — launch Flutterwave
+  btn.textContent = 'Redirecting to payment...';
+  btn.disabled = true;
+
+  const txRef = 'GRC-' + Date.now();
+
+  FlutterwaveCheckout({
+    public_key: 'FLWPUBK-274629f90b6f30abeb3e0b2b8d80df28-X',
+    tx_ref: txRef,
+    amount: total,
+    currency: 'NGN',
+    payment_options: 'card,banktransfer,ussd',
+    customer: {
+      email: val('customer-email'),
+      phone_number: val('customer-phone'),
+      name: val('customer-name'),
+    },
+    customizations: {
+      title: 'Graceon Cookies',
+      description: 'Payment for your Graceon cookie order',
+      logo: 'https://pvzabostsjzxnmnbqvul.supabase.co/storage/v1/object/public/graceon-images/logo/graceon-logo.jpeg',
+    },
+    callback: async function(response) {
+      if (response.status === 'successful' || response.status === 'completed') {
+        await saveOrderToSupabase(total, isGift, wrapVal, 'paid', response.transaction_id, txRef);
+      } else {
+        showToast('Payment was not completed. Please try again.');
+        btn.textContent = '🍪 Place Order';
+        btn.disabled = false;
+      }
+    },
+    onclose: function() {
+      btn.textContent = '🍪 Place Order';
+      btn.disabled = false;
+    }
+  });
+}
+
+// ---- Save order to Supabase after payment ----
+async function saveOrderToSupabase(total, isGift, wrapVal, status, transactionId = null, txRef = null) {
   const orderData = {
     customer_name: val('customer-name'),
     customer_email: val('customer-email'),
     items: cart,
     total: total,
-    status: 'pending',
+    status: status,
     gift_message: isGift ? val('gift-message') : null,
-    user_id: loggedInCustomer ? loggedInCustomer.id : null
+    user_id: loggedInCustomer ? loggedInCustomer.id : null,
+    payment_method: document.querySelector('input[name="payment"]:checked')?.value || 'card',
+    transaction_id: transactionId ? String(transactionId) : null,
+    tx_ref: txRef
   };
 
   try {
@@ -299,9 +346,7 @@ async function placeOrder() {
     document.getElementById('success-overlay').classList.add('open');
 
   } catch (err) {
-    console.error('Error placing order:', err);
-    showToast('Something went wrong. Please try again.');
-    btn.textContent = '🍪 Place Order';
-    btn.disabled = false;
+    console.error('Error saving order:', err);
+    showToast('Payment received but order could not be saved. Please contact us.');
   }
 }
